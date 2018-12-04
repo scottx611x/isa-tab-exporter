@@ -1,0 +1,6 @@
+lambda/py_reqs*
+!lambda/py_reqs/__init__.py
+
+terraform/lambda.zip
+.terraform
+terraform.tfstate*
