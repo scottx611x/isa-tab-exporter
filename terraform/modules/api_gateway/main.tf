@@ -12,7 +12,7 @@ resource "aws_api_gateway_resource" "isatab-exporter-resource" {
 resource "aws_api_gateway_method" "isatab-exporter-method" {
   rest_api_id   = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
   resource_id   = "${aws_api_gateway_resource.isatab-exporter-resource.id}"
-  http_method   = "ANY"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
@@ -21,6 +21,7 @@ resource "aws_api_gateway_integration" "isatab-exporter-integration" {
   resource_id = "${aws_api_gateway_method.isatab-exporter-method.resource_id}"
   http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
 
+  # Proxy incoming POST requests to our lambda function
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = "${var.lambda_function_invoke_arn}"
@@ -28,6 +29,7 @@ resource "aws_api_gateway_integration" "isatab-exporter-integration" {
 
 resource "aws_api_gateway_deployment" "isatab-exporter-deployment" {
   depends_on = [
+    "aws_api_gateway_method.isatab-exporter-method",
     "aws_api_gateway_integration.isatab-exporter-integration"
   ]
 
