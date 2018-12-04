@@ -1,3 +1,5 @@
+.idea*
+
 lambda/py_reqs*
 !lambda/py_reqs/__init__.py
 
