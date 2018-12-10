@@ -1,5 +1,6 @@
 language: python
 cache: pip
+sudo: required
 python:
   - 3.6
 
@@ -17,10 +18,10 @@ before_install:
 
 install:
   # Install terraform
-  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/$TERRAFORM_VERSION/terraform_$TERRAFORM_VERSION_linux_amd64.zip
-  - unzip /tmp/terraform.zip -d /tmp
-  - mv /tmp/terraform ~/bin
-  - export PATH="~/bin:$PATH"
+  - curl -fSL "https://releases.hashicorp.com/terraform/$TERRAFORM_VERSION/terraform_$TERRAFORM_VERSION_linux_amd64.zip" -o terraform.zip
+  - sudo unzip terraform.zip -d /opt/terraform
+  - sudo ln -s /opt/terraform/terraform /usr/bin/terraform
+  - rm -f terraform.zip
 
   # Install reqs for testing
   - pip install -r requirements_test.txt
