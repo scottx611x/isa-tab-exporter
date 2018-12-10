@@ -22,3 +22,6 @@ The Terraform code will be run in TravisCI upon successful `master` branch build
 ---
 
 ![screen shot 2018-12-10 at 2 53 16 pm](https://user-images.githubusercontent.com/5629547/49757849-692cd680-fc8b-11e8-833a-f5cd3e45ed1e.png)
+
+
+![screen shot 2018-12-10 at 4 34 03 pm](https://user-images.githubusercontent.com/5629547/49763058-9aac9e80-fc99-11e8-9634-13d85a8093d7.png)
