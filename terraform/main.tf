@@ -8,9 +8,14 @@ module api_gateway {
   lambda_function_invoke_arn = "${module.lambda.lambda_function_invoke_arn}"
 }
 
-module iam {
-  source  = "./modules/iam"
+module cloud_watch {
+  source               = "./modules/cloud_watch"
+  lambda_function_name = "${module.lambda.lambda_function_name}"
+}
 
+module iam {
+  source                   = "./modules/iam"
+  cloudwatch_log_group_arn = "${module.cloud_watch.cloudwatch_log_group_arn}"
 }
 
 module lambda {
