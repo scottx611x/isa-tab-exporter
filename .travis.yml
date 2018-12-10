@@ -24,7 +24,7 @@ install:
   - rm -f terraform.zip
 
   # Install reqs for testing
-  - pip install -r requirements_test.txt
+  - pip install -r requirements-test.txt
 
 
 script:
