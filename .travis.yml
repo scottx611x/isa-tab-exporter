@@ -5,7 +5,7 @@ python:
 
 env:
   global:
-    - TERRAFORM_VERSION=0.11.7
+    - TERRAFORM_VERSION=0.11.10
 
 #stages:
 #  - name: deploy
