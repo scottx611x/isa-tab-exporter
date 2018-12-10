@@ -4,6 +4,8 @@ from io import BytesIO
 import logging
 from zipfile import ZipFile
 
+from ._python_requirements_.isatools.model import Assay, Investigation, Study
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -30,6 +32,7 @@ def create_response(isatab_filename, status_code=200):
         "body": create_test_zip().decode('ascii'),
         "isBase64Encoded": True
     }
+
 
 def post_handler(event, context):
     isatab_filename = "ISATab"
