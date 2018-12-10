@@ -19,8 +19,13 @@ module iam {
 }
 
 module lambda {
-  source                               = "./modules/lambda"
-  iam_role_arn                         = "${module.iam.iam_role_arn}"
+  source                             = "./modules/lambda"
   api_gateway_rest_api_execution_arn = "${module.api_gateway.aws_api_gateway_rest_api_execution_arn}"
-  api_gateway_resource_path            = "${module.api_gateway.api_gateway_resource_path}"
+  api_gateway_resource_path          = "${module.api_gateway.api_gateway_resource_path}"
+  iam_role_arn                       = "${module.iam.lambda_iam_role_arn}"
+  s3_bucket                          = "${module.s3.s3_bucket}"
+}
+
+module s3 {
+  source = "./modules/s3"
 }
