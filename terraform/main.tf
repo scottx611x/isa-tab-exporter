@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "us-east-1"
+  region  = "us-east-1"
   profile = "scottx611x@gmail.com"
 }
 
 module api_gateway {
-  source  = "./modules/api_gateway"
+  source                     = "./modules/api_gateway"
   lambda_function_invoke_arn = "${module.lambda.lambda_function_invoke_arn}"
 }
 
