@@ -55,7 +55,3 @@ class IsaTabExporterTests(unittest.TestCase):
         lambda_response = post_handler(self.test_event, self.test_context)
         # Just assert that we can decode the body as base64 bytes
         base64.decodebytes(bytes(lambda_response.get("body").encode("ascii")))
-
-
-if __name__ == '__main__':
-    unittest.main()
