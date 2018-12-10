@@ -1,47 +1,44 @@
 language: python
 cache: pip
+sudo: required
 python:
   - 3.6
 
 env:
   global:
-    - TERRAFORM_VERSION=0.11.7
+    - TERRAFORM_VERSION=0.11.10
 
-stages:
-  - name: deploy
-    if: branch = master
+#stages:
+#  - name: deploy
+#    if: branch = master
 
 before_install:
   # https://github.com/travis-ci/travis-ci/issues/7940#issuecomment-311411559
   - export BOTO_CONFIG=/dev/null
-  
 
 install:
   # Install terraform
-  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/$TERRAFORM_VERSION/terraform_$TERRAFORM_VERSION_linux_amd64.zip
-  - unzip /tmp/terraform.zip -d /tmp
-  - mv /tmp/terraform ~/bin
-  - export PATH="~/bin:$PATH"
+  - curl -fSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o terraform.zip
+  - sudo unzip terraform.zip -d /opt/terraform
+  - sudo ln -s /opt/terraform/terraform /usr/bin/terraform
+  - rm -f terraform.zip
 
-  # Install lambda reqs within the lambda function context
-  - pip install -r lambda/requirements.txt -t lambda/
-  
   # Install reqs for testing
-  - pip install codecov coverage
+  - pip install -r requirements-test.txt
 
 
 script:
   - pushd terraform
-  - terraform init && terraform validate
+  - terraform init
+  - terraform validate
+  - terraform fmt -check=true -diff=true
   - popd
 
-  - pushd lambda
-  - coverage run tests.py
-  - popd
+  - nosetests --with-coverage --cover-tests
 
 after_success:
   - codecov
 
-deploy:
-  provider: script
-  script: bash deploy.sh
+#deploy:
+#  provider: script
+#  script: bash deploy.sh

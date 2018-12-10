@@ -1,7 +1,6 @@
 resource "aws_api_gateway_rest_api" "isatab-exporter-api" {
   name        = "isatab-exporter-api"
   description = "ISATab Exporter API"
-  binary_media_types = ["application/zip"]
 }
 
 resource "aws_api_gateway_resource" "isatab-exporter-resource" {
@@ -33,33 +32,23 @@ resource "aws_api_gateway_method_response" "200" {
   resource_id = "${aws_api_gateway_resource.isatab-exporter-resource.id}"
   http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
   status_code = "200"
-  response_parameters = {
-    "method.response.header.Content-Type" = true
-  }
-  response_models = {
-    "application/zip" = "Empty"
-  }
 }
 
 resource "aws_api_gateway_integration_response" "isatab-exporter-integration-post-response" {
   depends_on = [
-    "aws_api_gateway_integration.isatab-exporter-integration"
+    "aws_api_gateway_integration.isatab-exporter-integration",
   ]
+
   rest_api_id = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
   resource_id = "${aws_api_gateway_method.isatab-exporter-method.resource_id}"
   http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
   status_code = "${aws_api_gateway_method_response.200.status_code}"
-
-  response_parameters = {
-    "method.response.header.Content-Type" = "'application/zip'"
-  }
-  content_handling = "CONVERT_TO_BINARY"
 }
 
 resource "aws_api_gateway_deployment" "isatab-exporter-deployment" {
   depends_on = [
     "aws_api_gateway_method.isatab-exporter-method",
-    "aws_api_gateway_integration.isatab-exporter-integration"
+    "aws_api_gateway_integration.isatab-exporter-integration",
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"

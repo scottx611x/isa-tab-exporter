@@ -1,8 +1,12 @@
 .idea*
 
-lambda/_python_requirements_*
-!lambda/_python_requirements_/__init__.py
+__pycache__
+
+lambda_function/_python_requirements_*
+lambda_function/__pycache__
+!lambda_function/_python_requirements_/__init__.py
 
 terraform/lambda.zip
 .terraform
 terraform.tfstate*
+.coverage
