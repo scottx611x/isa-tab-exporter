@@ -2,10 +2,7 @@ import base64
 import json
 import logging
 import os
-import sys
 from zipfile import ZipFile
-
-print(sys.version)
 
 from isatools import isatab
 from isatools.model import (
