@@ -25,32 +25,30 @@ class IsaTabExporterTests(unittest.TestCase):
         lambda_response = post_handler(self.test_event, self.test_context)
         self.assertDictContainsSubset(
             {
-                'headers': {
-                    'Content-Encoding': 'zip',
-                    'Content-Type': 'application/zip',
-                    'Content-Disposition':
-                        "attachment; filename=\"Cool ISATab.zip\""
+                "headers": {
+                    "Content-Encoding": "zip",
+                    "Content-Type": "application/zip",
+                    "Content-Disposition": 'attachment; filename="Cool ISATab.zip"',
                 },
-                'isBase64Encoded': True,
-                'statusCode': 200
+                "isBase64Encoded": True,
+                "statusCode": 200,
             },
-            lambda_response
+            lambda_response,
         )
 
     def test_post_handler_lambda_response_without_provided_filename(self):
         lambda_response = post_handler({}, self.test_context)
         self.assertDictContainsSubset(
             {
-                'headers': {
-                    'Content-Encoding': 'zip',
-                    'Content-Type': 'application/zip',
-                    'Content-Disposition':
-                        "attachment; filename=\"ISATab.zip\""
+                "headers": {
+                    "Content-Encoding": "zip",
+                    "Content-Type": "application/zip",
+                    "Content-Disposition": 'attachment; filename="ISATab.zip"',
                 },
-                'isBase64Encoded': True,
-                'statusCode': 200
+                "isBase64Encoded": True,
+                "statusCode": 200,
             },
-            lambda_response
+            lambda_response,
         )
 
     def test_post_handler_lambda_response_body_contains_valid_zip(self):
@@ -63,7 +61,5 @@ class IsaTabExporterTests(unittest.TestCase):
         isa_zip = zipfile.ZipFile(in_mem_bytes)
 
         self.assertEqual(
-            isa_zip.namelist(),
-            ["i_investigation.txt", "s_study.txt", "a_assay.txt"]
+            isa_zip.namelist(), ["i_investigation.txt", "s_study.txt", "a_assay.txt"]
         )
-

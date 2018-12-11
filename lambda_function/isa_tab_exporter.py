@@ -10,9 +10,22 @@ sys.path.insert(0, os.path.abspath("__python_reqs__"))
 
 from isatools import isatab
 from isatools.model import (
-    Investigation, Study, Assay, Process, Material,
-    DataFile, OntologyAnnotation, plink, Protocol, Source, Sample,
-    OntologySource, Characteristic, batch_create_materials, Publication, Person
+    Investigation,
+    Study,
+    Assay,
+    Process,
+    Material,
+    DataFile,
+    OntologyAnnotation,
+    plink,
+    Protocol,
+    Source,
+    Sample,
+    OntologySource,
+    Characteristic,
+    batch_create_materials,
+    Publication,
+    Person,
 )
 
 logger = logging.getLogger()
@@ -22,9 +35,9 @@ logger.setLevel(logging.INFO)
 def create_isatools_zip(isatab_filename):
     create_descriptor()
     with open("/tmp/i_investigation.txt") as f:
-        create_isatab_archive(f, target_filename=f'/tmp/{isatab_filename}.zip')
+        create_isatab_archive(f, target_filename=f"/tmp/{isatab_filename}.zip")
 
-    with open(f'/tmp/{isatab_filename}.zip', "rb") as z:
+    with open(f"/tmp/{isatab_filename}.zip", "rb") as z:
         return base64.b64encode(z.read())
 
 
@@ -32,12 +45,12 @@ def create_response(isatab_filename, status_code=200):
     return {
         "statusCode": status_code,
         "headers": {
-          "Content-Type": "application/zip",
-          "Content-Encoding": "zip",
-          "Content-Disposition": f"attachment; filename=\"{isatab_filename}.zip\""
+            "Content-Type": "application/zip",
+            "Content-Encoding": "zip",
+            "Content-Disposition": f'attachment; filename="{isatab_filename}.zip"',
         },
-        "body": create_isatools_zip(isatab_filename).decode('ascii'),
-        "isBase64Encoded": True
+        "body": create_isatools_zip(isatab_filename).decode("ascii"),
+        "isBase64Encoded": True,
     }
 
 
@@ -64,9 +77,11 @@ def create_descriptor():
     investigation = Investigation()
     investigation.identifier = "i1"
     investigation.title = "My Simple ISA Investigation"
-    investigation.description = "We could alternatively use the class constructor's parameters to set some default " \
-                                "values at the time of creation, however we want to demonstrate how to use the " \
-                                "object's instance variables to set values."
+    investigation.description = (
+        "We could alternatively use the class constructor's parameters to set some default "
+        "values at the time of creation, however we want to demonstrate how to use the "
+        "object's instance variables to set values."
+    )
     investigation.submission_date = "2016-11-03"
     investigation.public_release_date = "2016-11-03"
 
@@ -77,9 +92,11 @@ def create_descriptor():
     study = Study(filename="s_study.txt")
     study.identifier = "s1"
     study.title = "My ISA Study"
-    study.description = "Like with the Investigation, we could use the class constructor to set some default values, " \
-                        "but have chosen to demonstrate in this example the use of instance variables to set initial " \
-                        "values."
+    study.description = (
+        "Like with the Investigation, we could use the class constructor to set some default values, "
+        "but have chosen to demonstrate in this example the use of instance variables to set initial "
+        "values."
+    )
     study.submission_date = "2016-11-03"
     study.public_release_date = "2016-11-03"
     investigation.studies.append(study)
@@ -93,7 +110,9 @@ def create_descriptor():
     # object. The 'intervention_design' object is then added to the list of 'design_descriptors' held by the Study
     # object.
 
-    obi = OntologySource(name='OBI', description="Ontology for Biomedical Investigations")
+    obi = OntologySource(
+        name="OBI", description="Ontology for Biomedical Investigations"
+    )
     investigation.ontology_source_references.append(obi)
     intervention_design = OntologyAnnotation(term_source=obi)
     intervention_design.term = "intervention design"
@@ -103,9 +122,16 @@ def create_descriptor():
     # Other instance variables common to both Investigation and Study objects include 'contacts' and 'publications',
     # each with lists of corresponding Person and Publication objects.
 
-    contact = Person(first_name="Alice", last_name="Robertson", affiliation="University of Life", roles=[OntologyAnnotation(term='submitter')])
+    contact = Person(
+        first_name="Alice",
+        last_name="Robertson",
+        affiliation="University of Life",
+        roles=[OntologyAnnotation(term="submitter")],
+    )
     study.contacts.append(contact)
-    publication = Publication(title="Experiments with Elephants", author_list="A. Robertson, B. Robertson")
+    publication = Publication(
+        title="Experiments with Elephants", author_list="A. Robertson, B. Robertson"
+    )
     publication.pubmed_id = "12345678"
     publication.status = OntologyAnnotation(term="published")
     study.publications.append(publication)
@@ -118,7 +144,7 @@ def create_descriptor():
 
     # Here we create one Source material object and attach it to our study.
 
-    source = Source(name='source_material')
+    source = Source(name="source_material")
     study.sources.append(source)
 
     # Then we create three Sample objects, with organism as Homo Sapiens, and attach them to the study. We use the utility function
@@ -126,22 +152,31 @@ def create_descriptor():
     # an index to the material name. In this case, three samples will be created, with the names
     # 'sample_material-0', 'sample_material-1' and 'sample_material-2'.
 
-    prototype_sample = Sample(name='sample_material', derives_from=[source])
-    ncbitaxon = OntologySource(name='NCBITaxon', description="NCBI Taxonomy")
-    characteristic_organism = Characteristic(category=OntologyAnnotation(term="Organism"),
-                                     value=OntologyAnnotation(term="Homo Sapiens", term_source=ncbitaxon,
-                                                              term_accession="http://purl.bioontology.org/ontology/NCBITAXON/9606"))
+    prototype_sample = Sample(name="sample_material", derives_from=[source])
+    ncbitaxon = OntologySource(name="NCBITaxon", description="NCBI Taxonomy")
+    characteristic_organism = Characteristic(
+        category=OntologyAnnotation(term="Organism"),
+        value=OntologyAnnotation(
+            term="Homo Sapiens",
+            term_source=ncbitaxon,
+            term_accession="http://purl.bioontology.org/ontology/NCBITAXON/9606",
+        ),
+    )
     prototype_sample.characteristics.append(characteristic_organism)
 
-    study.samples = batch_create_materials(prototype_sample, n=3)  # creates a batch of 3 samples
+    study.samples = batch_create_materials(
+        prototype_sample, n=3
+    )  # creates a batch of 3 samples
 
     # Now we create a single Protocol object that represents our sample collection protocol, and attach it to the
     # study object. Protocols must be declared before we describe Processes, as a processing event of some sort
     # must execute some defined protocol. In the case of the class model, Protocols should therefore be declared
     # before Processes in order for the Process to be linked to one.
 
-    sample_collection_protocol = Protocol(name="sample collection",
-                                          protocol_type=OntologyAnnotation(term="sample collection"))
+    sample_collection_protocol = Protocol(
+        name="sample collection",
+        protocol_type=OntologyAnnotation(term="sample collection"),
+    )
     study.protocols.append(sample_collection_protocol)
     sample_collection_process = Process(executes_protocol=sample_collection_protocol)
 
@@ -163,9 +198,13 @@ def create_descriptor():
     # Next, we build n Assay object and attach two protocols, extraction and sequencing.
 
     assay = Assay(filename="a_assay.txt")
-    extraction_protocol = Protocol(name='extraction', protocol_type=OntologyAnnotation(term="material extraction"))
+    extraction_protocol = Protocol(
+        name="extraction", protocol_type=OntologyAnnotation(term="material extraction")
+    )
     study.protocols.append(extraction_protocol)
-    sequencing_protocol = Protocol(name='sequencing', protocol_type=OntologyAnnotation(term="material sequencing"))
+    sequencing_protocol = Protocol(
+        name="sequencing", protocol_type=OntologyAnnotation(term="material sequencing")
+    )
     study.protocols.append(sequencing_protocol)
 
     # To build out assay graphs, we enumereate the samples from the study-level, and for each sample we create an
@@ -201,7 +240,11 @@ def create_descriptor():
 
         # Sequencing process usually has an output data file
 
-        datafile = DataFile(filename="sequenced-data-{}".format(i), label="Raw Data File", generated_from=[sample])
+        datafile = DataFile(
+            filename="sequenced-data-{}".format(i),
+            label="Raw Data File",
+            generated_from=[sample],
+        )
         sequencing_process.outputs.append(datafile)
 
         # Ensure Processes are linked forward and backward. plink(from_process, to_process) is a function to set
@@ -224,11 +267,15 @@ def create_descriptor():
     study.assays.append(assay)
 
     from isatools import isatab
-    isatab.dump(investigation, "/tmp/")  # dumps() writes out the ISA as a string representation of the ISA-Tab
+
+    isatab.dump(
+        investigation, "/tmp/"
+    )  # dumps() writes out the ISA as a string representation of the ISA-Tab
 
 
-def create_isatab_archive(inv_fp, target_filename=None,
-                          filter_by_measurement=None, ignore_missing_files=True):
+def create_isatab_archive(
+    inv_fp, target_filename=None, filter_by_measurement=None, ignore_missing_files=True
+):
     """Function to create an ISArchive; option to select by assay measurement type
 
     Example usage:
@@ -237,8 +284,7 @@ def create_isatab_archive(inv_fp, target_filename=None,
         >>> create_isatab_archive(open('/path/to/i.txt', filter_by_measurement='transcription profiling')
     """
     if target_filename is None:
-        target_filename = os.path.join(
-            os.path.dirname(inv_fp.name), 'isatab.zip')
+        target_filename = os.path.join(os.path.dirname(inv_fp.name), "isatab.zip")
     ISA = isatab.load(inv_fp)
 
     all_files_in_isatab = []
@@ -246,9 +292,10 @@ def create_isatab_archive(inv_fp, target_filename=None,
 
     for s in ISA.studies:
         if filter_by_measurement is not None:
-            logger.debug('Selecting ', filter_by_measurement)
-            selected_assays = [a for a in s.assays if
-                               a.measurement_type.term == filter_by_measurement]
+            logger.debug("Selecting ", filter_by_measurement)
+            selected_assays = [
+                a for a in s.assays if a.measurement_type.term == filter_by_measurement
+            ]
         else:
             selected_assays = s.assays
 
@@ -262,18 +309,18 @@ def create_isatab_archive(inv_fp, target_filename=None,
     missing_files = [f for f in all_files_in_isatab if f not in found_files]
 
     if len(missing_files) == 0 or ignore_missing_files:
-        logger.debug('Do zip')
-        with ZipFile(target_filename, mode='w') as zip_file:
+        logger.debug("Do zip")
+        with ZipFile(target_filename, mode="w") as zip_file:
             # use relative dir_name to avoid absolute path on file names
             zip_file.write(inv_fp.name, arcname=os.path.basename(inv_fp.name))
 
             for s in ISA.studies:
-                zip_file.write(
-                    os.path.join(dirname, s.filename), arcname=s.filename)
+                zip_file.write(os.path.join(dirname, s.filename), arcname=s.filename)
 
                 for a in selected_assays:
                     zip_file.write(
-                        os.path.join(dirname, a.filename), arcname=a.filename)
+                        os.path.join(dirname, a.filename), arcname=a.filename
+                    )
             if not ignore_missing_files:
                 for file in all_files_in_isatab:
                     zip_file.write(os.path.join(dirname, file), arcname=file)
@@ -282,6 +329,6 @@ def create_isatab_archive(inv_fp, target_filename=None,
             return zip_file.namelist()
 
     else:
-        logger.debug('Not zipping')
-        logger.debug('Missing: ', missing_files)
+        logger.debug("Not zipping")
+        logger.debug("Missing: ", missing_files)
         return None
