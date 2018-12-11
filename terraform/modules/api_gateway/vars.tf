@@ -1,5 +1,5 @@
 variable api_gateway_stage_name {
-  default = "production"
+  default = "development"
 }
 
 variable lambda_function_invoke_arn {}
