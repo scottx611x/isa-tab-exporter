@@ -2,9 +2,8 @@
 
 __pycache__
 
-lambda_function/*
-!lambda_function/requirements.txt
-!lambda_function/isa_tab_exporter.py
+lambda_function/__python_reqs__/*
+!lambda_function/__python_reqs__/.gitkeep
 
 
 terraform/lambda_function.zip
