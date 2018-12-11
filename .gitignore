@@ -2,11 +2,12 @@
 
 __pycache__
 
-lambda_function/_python_requirements_*
-lambda_function/__pycache__
-!lambda_function/_python_requirements_/__init__.py
+lambda_function/*
+!lambda_function/requirements.txt
+!lambda_function/isa_tab_exporter.py
 
-terraform/lambda.zip
+
+terraform/lambda_function.zip
 .terraform
 terraform.tfstate*
 .coverage
