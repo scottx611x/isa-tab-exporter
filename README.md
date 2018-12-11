@@ -18,6 +18,8 @@ Specifically, an API Gateway deployment is created that accepts these POST reque
 - `nosetests`
 
 ### Manual deployment:
+The `deploy.sh` script will build the Lambda's python reqs using an Amazon Linux docker container, and provision the AWS infrastructure using Terraform.
+
 - `./deploy.sh`
     - Terraform will spit out the base URL of the current API Gateway deployment
         ```
