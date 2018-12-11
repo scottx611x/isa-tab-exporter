@@ -2,7 +2,11 @@ import base64
 import json
 import logging
 import os
+import sys
 from zipfile import ZipFile
+
+# Add lambda Third party reqs to python path
+sys.path.insert(0, os.path.abspath("__python_reqs__"))
 
 from isatools import isatab
 from isatools.model import (
