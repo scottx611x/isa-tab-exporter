@@ -13,6 +13,7 @@ resource "aws_lambda_function" "isatab_exporter_lambda" {
   s3_bucket        = "${var.s3_bucket}"
   s3_key           = "${local.lambda_zip_name}"
   timeout          = 30
+  memory_size      = 256
 }
 
 resource "aws_lambda_permission" "api_gateway_lambda_permission" {
