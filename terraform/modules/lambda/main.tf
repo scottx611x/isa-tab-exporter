@@ -1,5 +1,5 @@
 locals {
-  lamda_zip_name = "lambda.zip"
+  lambda_zip_name = "lambda_function.zip"
 }
 
 resource "aws_lambda_function" "isatab_exporter_lambda" {
@@ -11,7 +11,8 @@ resource "aws_lambda_function" "isatab_exporter_lambda" {
   source_code_hash = "${base64sha256(file(data.archive_file.lambda_zip.output_path))}"
   runtime          = "python3.6"
   s3_bucket        = "${var.s3_bucket}"
-  s3_key           = "${local.lamda_zip_name}"
+  s3_key           = "${local.lambda_zip_name}"
+  timeout          = 30
 }
 
 resource "aws_lambda_permission" "api_gateway_lambda_permission" {
@@ -26,7 +27,7 @@ resource "aws_lambda_permission" "api_gateway_lambda_permission" {
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_dir  = "${var.local_lambda_dir}"
-  output_path = "${local.lamda_zip_name}"
+  output_path = "${local.lambda_zip_name}"
 }
 
 // aws_lambda_function.isatab_exporter_lambda needs to depend on this object existing,
@@ -35,7 +36,7 @@ data "archive_file" "lambda_zip" {
 // It seems as though newer versions of TF will allow for specifcying modules resources directly in a `depends_on`
 resource "aws_s3_bucket_object" "isatab-exporter-lambda-zip" {
   bucket = "${var.s3_bucket}"
-  key    = "${local.lamda_zip_name}"
+  key    = "${local.lambda_zip_name}"
   source = "${data.archive_file.lambda_zip.output_path}"
   etag   = "${md5(file(data.archive_file.lambda_zip.output_path))}"
 }

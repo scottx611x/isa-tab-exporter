@@ -9,15 +9,42 @@ The aim of `isa-tab-exporter` is to provide the [refinery-platform](https://gith
 Specifically, an API Gateway deployment is created that accepts these POST requests, and proxies said requests to a Lambda function that it triggers which will execute the [ISA-tools API](https://github.com/ISA-tools/isa-api) code to transform the refinery ISATab JSON to a valid ISATab .zip file.
 
 ### Pre-Reqs:
-- [Terraform](https://www.terraform.io/)
-- Python 3.x
+- [terraform](https://www.terraform.io/)
+- [docker](https://docs.docker.com/)
+- `Python 3.6.x`
 
 ### Running Tests:
 - `pip install -r requirements-test.txt`
 - `nosetests`
 
+### Manual deployment:
+- `./deploy.sh`
+    - Terraform will spit out the base URL of the current API Gateway deployment
+        ```
+        Apply complete! Resources: 15 added, 0 changed, 0 destroyed.
+
+        Outputs:
+
+        api_gateway_deployment_invoke_url = https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/development
+        ```
+
 ### CI/CD:
-The Terraform code will be run in TravisCI upon successful `master` branch builds deploying the latest version of the APIGateway/Lambda.
+The Terraform code will be run in Travis-CI upon successful `master` branch builds deploying the latest version of the APIGateway/Lambda to the `production` APIGateway stage.
+
+### Example Usage:
+```
+$ curl -X POST \
+  -O \ # -O, --remote-name   Write output to a file named as the remote file
+  -J \ #  -J, --remote-header-name Use the header-provided filename
+  https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export \
+  -d '{"isatab_filename": "My Cool ISATab"}'
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  4641  100  4604  100    37    767      6  0:00:06  0:00:06 --:--:--  1301
+curl: Saved to filename 'My Cool ISATab.zip'
+```
+
 
 ---
 

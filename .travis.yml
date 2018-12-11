@@ -26,9 +26,6 @@ install:
   # Install reqs for testing
   - pip install -r requirements-test.txt
 
-  # Install reqs for Lamba
-  - pip install -r lambda_function/requirements.txt -t lambda_function/_python_requirements_
-
 script:
   - pushd terraform
   - terraform init
@@ -36,7 +33,7 @@ script:
   - terraform fmt -check=true -diff=true
   - popd
 
-  - nosetests --with-coverage --cover-tests
+  - nosetests --with-coverage --cover-tests --cover-package=lambda_function.isa_tab_exporter,tests
 
 after_success:
   - codecov
