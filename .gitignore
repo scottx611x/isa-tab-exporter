@@ -5,7 +5,6 @@ __pycache__
 lambda_function/__python_reqs__/*
 !lambda_function/__python_reqs__/.gitkeep
 
-
 terraform/lambda_function.zip
 .terraform
 terraform.tfstate*
