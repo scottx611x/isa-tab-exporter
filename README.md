@@ -50,7 +50,7 @@ curl: Saved to filename 'My Cool ISATab.zip'
 ### Development Notes:
 Currently we are using [`flake8`](https://github.com/PyCQA/flake8) & [`black`](https://github.com/ambv/black) in CI to lint and format our Python code, respectively. These tools can be run outside of CI using the following commands:
 - `black --diff .`
-- `flake8 --exclude=lambda_function/__python_reqs__/*`
+- `flake8`
 
 ---
 

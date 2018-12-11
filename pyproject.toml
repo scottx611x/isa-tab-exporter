@@ -1,0 +1,4 @@
+[tool.black]
+line-length = 79
+py36 = true
+exclude = 'lambda_function/__python_reqs__'

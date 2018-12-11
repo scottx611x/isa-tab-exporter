@@ -36,7 +36,7 @@ script:
   - nosetests --with-coverage --cover-tests --cover-package=lambda_function.isa_tab_exporter,tests
 
   - black --check --diff .
-  - flake8 --exclude=lambda_function/__python_reqs__/*
+  - flake8
 
 after_success:
   - codecov

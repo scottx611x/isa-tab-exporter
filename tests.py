@@ -12,7 +12,9 @@ class IsaTabExporterTests(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
-        self.test_event = {"body": json.dumps({"isatab_filename": "Cool ISATab"})}
+        self.test_event = {
+            "body": json.dumps({"isatab_filename": "Cool ISATab"})
+        }
         self.test_context = {}
 
     def test_post_handler_lambda_response_with_provided_filename(self):
@@ -22,7 +24,9 @@ class IsaTabExporterTests(unittest.TestCase):
                 "headers": {
                     "Content-Encoding": "zip",
                     "Content-Type": "application/zip",
-                    "Content-Disposition": 'attachment; filename="Cool ISATab.zip"',
+                    "Content-Disposition": (
+                        'attachment; filename="Cool ISATab.zip"'
+                    ),
                 },
                 "isBase64Encoded": True,
                 "statusCode": 200,
@@ -55,5 +59,6 @@ class IsaTabExporterTests(unittest.TestCase):
         isa_zip = zipfile.ZipFile(in_mem_bytes)
 
         self.assertEqual(
-            isa_zip.namelist(), ["i_investigation.txt", "s_study.txt", "a_assay.txt"]
+            isa_zip.namelist(),
+            ["i_investigation.txt", "s_study.txt", "a_assay.txt"],
         )
