@@ -12,13 +12,7 @@ class IsaTabExporterTests(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
-        self.test_event = {
-            "body": json.dumps(
-                {
-                    "isatab_filename": "Cool ISATab"
-                }
-            )
-        }
+        self.test_event = {"body": json.dumps({"isatab_filename": "Cool ISATab"})}
         self.test_context = {}
 
     def test_post_handler_lambda_response_with_provided_filename(self):
