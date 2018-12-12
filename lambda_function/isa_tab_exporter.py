@@ -34,9 +34,7 @@ logger.setLevel(logging.INFO)
 
 
 class IsaArchiveCreatorBadRequest(Exception):
-    def __init__(self, message):
-        super().__init__(message)
-        self.message = message
+    pass
 
 
 class IsaArchiveCreator:
@@ -201,7 +199,7 @@ def post_handler(event, context):
     try:
         return IsaArchiveCreator(event.get("body")).run()
     except IsaArchiveCreatorBadRequest as e:
-        return create_response(e.message, status_code=400)
+        return create_response(str(e), status_code=400)
     except Exception as e:
         return create_response(f"Unexpected Error: {e}", status_code=500)
 
