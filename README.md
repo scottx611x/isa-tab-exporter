@@ -39,7 +39,10 @@ $ curl -X POST \
   -O \ # -O, --remote-name   Write output to a file named as the remote file
   -J \ #  -J, --remote-header-name Use the header-provided filename
   https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export \
-  -d '{"isatab_filename": "My Cool ISATab"}'
+  -d '{
+    "isatab_filename": "SuperCoolISA",
+    "isatab_contents": {}
+}'
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
