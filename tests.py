@@ -93,7 +93,7 @@ class IsaTabExporterTests(unittest.TestCase):
     def test_post_handler_lambda_response_without_provided_filename(self):
         lambda_response = post_handler(
             {"body": json.dumps({"isatab_contents": self.isatab_contents})},
-            self.test_context
+            self.test_context,
         )
         self.assertDictContainsSubset(
             {
@@ -157,4 +157,26 @@ class IsaTabExporterTests(unittest.TestCase):
         self.assertEqual(
             isa_zip.namelist(),
             ["i_investigation.txt", "s_study.txt", "a_assay.txt"],
+        )
+
+    def test_post_handler_lambda_response_invalid_isa_json(self):
+        lambda_response = post_handler(
+            {"body": json.dumps({"isatab_contents": {}})}, self.test_context
+        )
+        self.assertEqual(
+            {
+                "body": str(
+                    [
+                        {
+                            "message": "JSON Error",
+                            "supplemental": (
+                                "Error when reading JSON; key: 'studies'"
+                            ),
+                            "code": 2,
+                        }
+                    ]
+                ),
+                "statusCode": 400,
+            },
+            lambda_response,
         )
