@@ -40,8 +40,8 @@ $ curl -X POST \
   -J \ #  -J, --remote-header-name Use the header-provided filename
   https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export \
   -d '{
-    "isatab_filename": "SuperCoolISA",
-    "isatab_contents": {}
+    "isatab_filename": "My Cool ISATab",
+    "isatab_contents": <Valid ISAJSON content (Take a peek at test_data/)>
 }'
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
