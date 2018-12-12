@@ -52,7 +52,7 @@ class IsaArchiveCreator:
         self.isatab_name = (
             self.post_body.get("isatab_filename") or isatab_filename
         )
-        logger.info(f"isatab_filename is set to: {self.isatab_name}")
+        logger.info(f"`isatab_filename` is set to: {self.isatab_name}")
 
         isatab_contents = self.post_body.get("isatab_contents")
         if isatab_contents is None:
