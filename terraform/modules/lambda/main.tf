@@ -19,6 +19,7 @@ resource "aws_lambda_function" "isatab_exporter_lambda" {
   s3_key           = "${var.lambda_zip_name}"
   timeout          = 30
   memory_size      = 256
+  publish          = true
 }
 
 resource "aws_lambda_permission" "api_gateway_lambda_permission" {
