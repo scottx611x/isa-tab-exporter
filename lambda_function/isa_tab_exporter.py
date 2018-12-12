@@ -60,6 +60,7 @@ class IsaArchiveCreator:
                 "`isatab_contents` are required in the POST request body."
             )
         else:
+
             self.isatab_contents = isatab_contents
 
     def run(self):
@@ -199,8 +200,10 @@ def post_handler(event, context):
     try:
         return IsaArchiveCreator(event.get("body")).run()
     except IsaArchiveCreatorBadRequest as e:
+        logger.error(str(e))
         return create_response(str(e), status_code=400)
     except Exception as e:
+        logger.error(str(e))
         return create_response(f"Unexpected Error: {e}", status_code=500)
 
 
