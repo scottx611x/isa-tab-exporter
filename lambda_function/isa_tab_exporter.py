@@ -158,6 +158,7 @@ def create_response(
 
 
 def post_handler(event, context):
+    logger.info(f"Lambda function version: {context.function_version}")
     try:
         return IsaArchiveCreator(event.get("body")).run()
     except IsaArchiveCreatorBadRequest as e:

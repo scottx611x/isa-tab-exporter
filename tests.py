@@ -89,7 +89,11 @@ class IsaTabExporterTests(unittest.TestCase):
                     }
                 )
             }
-        self.test_context = {}
+
+        class LambdaContext:
+            function_version = "test_version"
+
+        self.test_context = LambdaContext()
 
     def test_post_handler_lambda_response_with_provided_filename(self):
         lambda_response = post_handler(self.test_event, self.test_context)
