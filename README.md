@@ -23,11 +23,11 @@ The `deploy.sh` script will build the Lambda's python reqs using an Amazon Linux
 - `./deploy.sh`
     - Terraform will spit out the base URL of the current API Gateway deployment
         ```
-        Apply complete! Resources: 15 added, 0 changed, 0 destroyed.
+        Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
 
         Outputs:
 
-        api_gateway_deployment_invoke_url = https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/development
+        api_gateway_deployment_invoke_url = https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export
         ```
 
 ### CI/CD:
@@ -41,7 +41,7 @@ $ curl -X POST \
   https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export \
   -d '{
     "isatab_filename": "My Cool ISATab",
-    "isatab_contents": <Valid ISAJSON content (Take a peek at test_data/)>
+    "isatab_contents": <Valid ISAJSON content (Take a peek at test_data/*)>
 }'
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
