@@ -6,7 +6,7 @@ The aim of `isa-tab-exporter` is to provide the [refinery-platform](https://gith
 ### How?
 `isa-tab-exporter` provides [terraform](https://www.terraform.io/) code that will create/manage AWS infrastructure allowing for POST requests containing valid [ISAJSON](https://isa-specs.readthedocs.io/en/latest/isajson.html) to be converted into a full blown [ISATab](http://www.dcc.ac.uk/resources/metadata-standards/isa-tab) Archive .zip file and returned to the end user.
 
-Specifically, an API Gateway deployment is created that accepts these POST requests, and proxies said requests to a Lambda function that it triggers which will execute the [ISA-tools API](https://github.com/ISA-tools/isa-api) code to transform the refinery ISATab JSON to a valid ISATab .zip file.
+Specifically, an API Gateway deployment is created that accepts these POST requests, and proxies said requests to a Lambda function that it triggers which will execute the [ISA-tools API](https://github.com/ISA-tools/isa-api) code to transform the ISAJSON to a valid ISATab Archive .zip file.
 
 ### Pre-Reqs:
 - [terraform](https://www.terraform.io/)
