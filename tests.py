@@ -49,13 +49,22 @@ TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES = [
 ]
 
 
-class IsaArchiveCreatorTests(unittest.TestCase):
+class TemporaryDirectoryTestCase(unittest.TestCase):
     def setUp(self):
         self.temp_test_dir = tempfile.mkdtemp() + "/"
         temp_dir_mock = mock.patch.object(
             IsaArchiveCreator, "_get_temp_dir", return_value=self.temp_test_dir
         )
         temp_dir_mock.start()
+
+    def tearDown(self):
+        shutil.rmtree(self.temp_test_dir)
+        mock.patch.stopall()
+
+
+class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
+    def setUp(self):
+        super().setUp()
 
         def isa_creator(isa_json_filename):
             with open(f"test_data/{isa_json_filename}") as sample_json:
@@ -68,10 +77,6 @@ class IsaArchiveCreatorTests(unittest.TestCase):
             return IsaArchiveCreator(post_body)
 
         self.isa_creator = isa_creator
-
-    def tearDown(self):
-        shutil.rmtree(self.temp_test_dir)
-        mock.patch.stopall()
 
     def test_default_isatab_zip_name(self):
         self.assertEqual(IsaArchiveCreator.DEFAULT_ISATAB_NAME, "ISATab")
@@ -148,10 +153,10 @@ class IsaArchiveCreatorTests(unittest.TestCase):
         self.assertEqual(isa_creator.isatab_name, "Cool ISATab")
 
 
-class IsaTabExporterTests(unittest.TestCase):
-    maxDiff = None
-
+class IsaTabExporterTests(TemporaryDirectoryTestCase):
     def setUp(self):
+        super().setUp()
+
         def create_test_event(isa_json_filename):
             with open(f"test_data/{isa_json_filename}") as sample_json:
                 isatab_contents = json.loads(sample_json.read())
