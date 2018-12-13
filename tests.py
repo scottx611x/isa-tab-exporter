@@ -11,8 +11,8 @@ import zipfile
 
 from lambda_function.isa_tab_exporter import (
     IsaArchiveCreator,
-    post_handler,
     IsaArchiveCreatorBadRequest,
+    api_gateway_post_handler as post_handler,
 )
 from parameterized import parameterized
 
