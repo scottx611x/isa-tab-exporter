@@ -12,7 +12,7 @@ from isatools import isatab, json2isatab
 from isatools.isajson import validate
 
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 class IsaArchiveCreatorBadRequest(Exception):
@@ -78,13 +78,13 @@ class IsaArchiveCreator:
         investigation_directory_name = os.path.dirname(
             investigation_file_object.name
         )
-        logger.debug(
+        logger.info(
             f"Lodaing ISATab objects from investigation file: "
             f"`{investigation_file_object.name}`"
         )
         isa_tab = isatab.load(investigation_file_object)
 
-        logger.debug(f"Zipping {self.isatab_name} to {self.isa_archive_path}")
+        logger.info(f"Zipping {self.isatab_name} to {self.isa_archive_path}")
 
         with ZipFile(self.isa_archive_path, mode="w") as isa_archive:
             isa_archive.write(
@@ -108,7 +108,7 @@ class IsaArchiveCreator:
                         arcname=assay_filename,
                     )
 
-        logger.debug(
+        logger.info(
             f"{self.isatab_name} file names: {isa_archive.namelist()}"
         )
 
