@@ -12,7 +12,7 @@ resource "aws_lambda_function" "isatab_exporter_lambda" {
 
   function_name    = "isatab-exporter"
   role             = "${var.iam_role_arn}"
-  handler          = "isa_tab_exporter.post_handler"
+  handler          = "isa_tab_exporter.api_gateway_post_handler"
   source_code_hash = "${var.lambda_zip_hash}"
   runtime          = "python3.6"
   s3_bucket        = "${var.s3_bucket}"
