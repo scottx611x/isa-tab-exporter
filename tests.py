@@ -76,13 +76,13 @@ class IsaArchiveCreatorTests(unittest.TestCase):
     def test_conversion_dir_is_set(self):
         self.assertEqual(
             os.path.join(self.temp_test_dir, "json2isatab_output/"),
-            self.isa_creator.conversion_dir
+            self.isa_creator.conversion_dir,
         )
 
     def test_isa_json_path_is_set(self):
         self.assertEqual(
             os.path.join(self.temp_test_dir, "isa.json"),
-            self.isa_creator.isa_json_path
+            self.isa_creator.isa_json_path,
         )
 
     def test_zip_is_stripped_from_isatab_name_if_provided(self):
