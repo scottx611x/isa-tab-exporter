@@ -8,8 +8,7 @@ from zipfile import ZipFile
 # Add Lambda's third-party reqs to PYTHONPATH
 sys.path.insert(0, os.path.abspath("__python_reqs__"))
 
-from isatools import isatab
-from isatools.convert.json2isatab import convert
+from isatools import isatab, json2isatab
 from isatools.isajson import validate
 
 logger = logging.getLogger()
@@ -28,6 +27,14 @@ class IsaArchiveCreator:
     DEFAULT_ISATAB_NAME = "ISATab"
 
     def __init__(self, post_body, isatab_filename=DEFAULT_ISATAB_NAME):
+        self.TEMP_DIR = self._get_temp_dir()
+        self.CONVERSION_OUTPUT_DIR = os.path.join(
+            self.TEMP_DIR, "json2isatab_output/"
+        )
+
+        if not os.path.exists(self.CONVERSION_OUTPUT_DIR):
+            os.makedirs(self.CONVERSION_OUTPUT_DIR)
+
         try:
             self.post_body = json.loads(post_body)
         except TypeError as e:
@@ -39,7 +46,9 @@ class IsaArchiveCreator:
             self.post_body.get("isatab_filename") or isatab_filename
         ).rstrip(".zip")
 
-        logger.info(f"`isatab_filename` is set to: {self.isatab_name}")
+        self.isa_archive_path = f"{self.TEMP_DIR}{self.isatab_name}.zip"
+
+        logger.info(f"`isatab_filename` is set to: `{self.isatab_name}`")
 
         isatab_contents = self.post_body.get("isatab_contents")
         if isatab_contents is None:
@@ -52,83 +61,60 @@ class IsaArchiveCreator:
     def create_base64_encoded_isatab_archive(self):
         self._write_out_isatab_contents()
 
-        with open("/tmp/isa.json", "r") as isa_json:
+        with open(f"{self.TEMP_DIR}isa.json") as isa_json:
             self._validate_isa_json(isa_json)
-            convert(isa_json, "/tmp/i_investigation.txt")
-
-        with open("/tmp/i_investigation.txt") as f:
-            self._create_isatab_archive(
-                f, target_filename=f"/tmp/{self.isatab_name}.zip"
+            isa_json.seek(0)  # Reset isa_json file pointer
+            json2isatab.convert(
+                isa_json, self.CONVERSION_OUTPUT_DIR, validate_first=False
             )
 
-        with open(f"/tmp/{self.isatab_name}.zip", "rb") as z:
+        with open(f"{self.CONVERSION_OUTPUT_DIR}i_investigation.txt") as f:
+            self._create_isatab_archive(f)
+
+        with open(f"{self.TEMP_DIR}{self.isatab_name}.zip", "rb") as z:
             return base64.b64encode(z.read()).decode("ascii")
 
-    def _create_isatab_archive(
-        self,
-        inv_fp,
-        target_filename=None,
-        filter_by_measurement=None,
-        ignore_missing_data_files=True,
-    ):
-        """Function to create an ISArchive; option to select by assay
-        measurement type
+    def _create_isatab_archive(self, investigation_file_object):
+        investigation_directory_name = os.path.dirname(
+            investigation_file_object.name
+        )
+        logger.debug(
+            f"Lodaing ISATab objects from investigation file: "
+            f"`{investigation_file_object.name}`"
+        )
+        isa_tab = isatab.load(investigation_file_object)
 
-        Example usage:
+        logger.debug(f"Zipping {self.isatab_name} to {self.isa_archive_path}")
 
-            >>> create_isatab_archive(open('/path/to/i_investigation.txt',
-            target_filename='isatab.zip')
-            >>> create_isatab_archive(open('/path/to/i.txt',
-            filter_by_measurement='transcription profiling')
-        """
-        if target_filename is None:
-            target_filename = os.path.join(
-                os.path.dirname(inv_fp.name), f"{self.isatab_name}.zip"
+        with ZipFile(self.isa_archive_path, mode="w") as isa_archive:
+            isa_archive.write(
+                investigation_file_object.name,
+                arcname=os.path.basename(investigation_file_object.name),
             )
-        ISA = isatab.load(inv_fp)
 
-        all_files_in_isatab = []
-        found_files = []
-
-        for s in ISA.studies:
-            if filter_by_measurement is not None:
-                logger.debug("Selecting ", filter_by_measurement)
-                selected_assays = [
-                    a
-                    for a in s.assays
-                    if a.measurement_type.term == filter_by_measurement
-                ]
-            else:
-                selected_assays = s.assays
-
-            for a in selected_assays:
-                all_files_in_isatab += [d.filename for d in a.data_files]
-        dirname = os.path.dirname(inv_fp.name)
-
-        for fname in all_files_in_isatab:
-            if os.path.isfile(os.path.join(dirname, fname)):
-                found_files.append(fname)
-
-        logger.debug(f"Zipping {self.isatab_name} to {target_filename}")
-        with ZipFile(target_filename, mode="w") as zip_file:
-            # use relative dir_name to avoid absolute path on file names
-            zip_file.write(inv_fp.name, arcname=os.path.basename(inv_fp.name))
-
-            for s in ISA.studies:
-                zip_file.write(
-                    os.path.join(dirname, s.filename), arcname=s.filename
+            for study in isa_tab.studies:
+                study_filename = study.filename
+                isa_archive.write(
+                    os.path.join(investigation_directory_name, study_filename),
+                    arcname=study_filename,
                 )
 
-                for a in selected_assays:
-                    zip_file.write(
-                        os.path.join(dirname, a.filename), arcname=a.filename
+                for assay in study.assays:
+                    assay_filename = assay.filename
+                    isa_archive.write(
+                        os.path.join(
+                            investigation_directory_name, assay_filename
+                        ),
+                        arcname=assay_filename,
                     )
-            if not ignore_missing_data_files:
-                for file in all_files_in_isatab:
-                    zip_file.write(os.path.join(dirname, file), arcname=file)
 
-            logger.debug(zip_file.namelist())
-            return zip_file.namelist()
+        logger.debug(
+            f"{self.isatab_name} file names: {isa_archive.namelist()}"
+        )
+
+    def _get_temp_dir(self):
+        # NOTE: only /tmp/ is writable within an AWS Lambda function
+        return "/tmp/"
 
     def run(self):
         return create_response(
@@ -143,7 +129,7 @@ class IsaArchiveCreator:
             raise IsaJSONValidationError(errors)
 
     def _write_out_isatab_contents(self):
-        with open("/tmp/isa.json", "w") as f:
+        with open(f"{self.TEMP_DIR}isa.json", "w") as f:
             json.dump(self.isatab_contents, f)
 
 
@@ -172,7 +158,6 @@ def create_response(
 
 
 def post_handler(event, context):
-    logger.info(f"Event: {event}")
     try:
         return IsaArchiveCreator(event.get("body")).run()
     except IsaArchiveCreatorBadRequest as e:
