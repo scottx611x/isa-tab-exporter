@@ -33,7 +33,7 @@ script:
   - terraform fmt -check=true -diff=true
   - popd
 
-  - nosetests --with-coverage --cover-tests --cover-package=lambda_function.isa_tab_exporter,tests
+  - nosetests -v --with-coverage --cover-tests --cover-package=lambda_function.isa_tab_exporter,tests
 
   - black --check --diff .
   - flake8

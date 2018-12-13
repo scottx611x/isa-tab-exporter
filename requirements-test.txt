@@ -4,3 +4,4 @@ coverage==4.5.2
 flake8==3.6.0
 isatools==0.10.3
 nose==1.3.7
+parameterized==0.6.1
