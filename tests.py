@@ -25,7 +25,7 @@ class IsaArchiveCreatorTests(unittest.TestCase):
         )
         temp_dir_mock.start()
 
-        with open("test_data/BII-S-7.json") as sample_json:
+        with open(f"test_data/BII-I-1.json") as sample_json:
             post_body = json.dumps(
                 {
                     "isatab_filename": TEST_ISA_ARCHIVE_NAME,
