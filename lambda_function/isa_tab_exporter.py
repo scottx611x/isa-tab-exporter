@@ -12,8 +12,6 @@ from isatools import isatab, json2isatab
 from isatools.isajson import validate
 
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
 
 class IsaArchiveCreatorBadRequest(Exception):
     pass
