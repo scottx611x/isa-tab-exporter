@@ -27,13 +27,13 @@ class IsaArchiveCreator:
     DEFAULT_ISATAB_NAME = "ISATab"
 
     def __init__(self, post_body, isatab_filename=DEFAULT_ISATAB_NAME):
-        self.TEMP_DIR = self._get_temp_dir()
-        self.CONVERSION_OUTPUT_DIR = os.path.join(
-            self.TEMP_DIR, "json2isatab_output/"
+        self.temp_dir = self._get_temp_dir()
+        self.conversion_dir = os.path.join(
+            self.temp_dir, "json2isatab_output/"
         )
 
-        if not os.path.exists(self.CONVERSION_OUTPUT_DIR):
-            os.makedirs(self.CONVERSION_OUTPUT_DIR)
+        if not os.path.exists(self.conversion_dir):
+            os.makedirs(self.conversion_dir)
 
         try:
             self.post_body = json.loads(post_body)
@@ -46,7 +46,10 @@ class IsaArchiveCreator:
             self.post_body.get("isatab_filename") or isatab_filename
         ).rstrip(".zip")
 
-        self.isa_archive_path = f"{self.TEMP_DIR}{self.isatab_name}.zip"
+        self.isa_archive_path = (
+            os.path.join(self.temp_dir, self.isatab_name) + ".zip"
+        )
+        self.isa_json_path = os.path.join(self.temp_dir, "isa.json")
 
         logger.info(f"`isatab_filename` is set to: `{self.isatab_name}`")
 
@@ -61,18 +64,20 @@ class IsaArchiveCreator:
     def create_base64_encoded_isatab_archive(self):
         self._write_out_isatab_contents()
 
-        with open(f"{self.TEMP_DIR}isa.json") as isa_json:
+        with open(self.isa_json_path) as isa_json:
             self._validate_isa_json(isa_json)
             isa_json.seek(0)  # Reset isa_json file pointer
             json2isatab.convert(
-                isa_json, self.CONVERSION_OUTPUT_DIR, validate_first=False
+                isa_json, self.conversion_dir, validate_first=False
             )
 
-        with open(f"{self.CONVERSION_OUTPUT_DIR}i_investigation.txt") as f:
-            self._create_isatab_archive(f)
+        with open(
+            os.path.join(self.conversion_dir, "i_investigation.txt")
+        ) as investigation:
+            self._create_isatab_archive(investigation)
 
-        with open(f"{self.TEMP_DIR}{self.isatab_name}.zip", "rb") as z:
-            return base64.b64encode(z.read()).decode("ascii")
+        with open(self.isa_archive_path, "rb") as isa_archive:
+            return base64.b64encode(isa_archive.read()).decode("ascii")
 
     def _create_isatab_archive(self, investigation_file_object):
         investigation_directory_name = os.path.dirname(
@@ -127,8 +132,8 @@ class IsaArchiveCreator:
             raise IsaJSONValidationError(errors)
 
     def _write_out_isatab_contents(self):
-        with open(f"{self.TEMP_DIR}isa.json", "w") as f:
-            json.dump(self.isatab_contents, f)
+        with open(self.isa_json_path, "w") as isa_json:
+            json.dump(self.isatab_contents, isa_json)
 
 
 def create_response(
@@ -136,11 +141,6 @@ def create_response(
     isatab_filename=IsaArchiveCreator.DEFAULT_ISATAB_NAME,
     status_code=200,
 ):
-    """
-
-    :param status_code:
-    :return:
-    """
     response = {"statusCode": status_code, "body": response_body}
     if status_code == 200:
         response["headers"] = {
