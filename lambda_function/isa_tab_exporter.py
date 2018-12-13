@@ -108,9 +108,7 @@ class IsaArchiveCreator:
                         arcname=assay_filename,
                     )
 
-        logger.info(
-            f"{self.isatab_name} file names: {isa_archive.namelist()}"
-        )
+        logger.info(f"{self.isatab_name} file names: {isa_archive.namelist()}")
 
     def _get_temp_dir(self):
         # NOTE: only /tmp/ is writable within an AWS Lambda function
