@@ -80,7 +80,7 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
         self.isa_creator = isa_creator
 
     def test_default_isatab_zip_name(self):
-        self.assertEqual(IsaArchiveCreator.DEFAULT_ISATAB_NAME, "ISATab")
+        self.assertEqual(IsaArchiveCreator.DEFAULT_ISA_ARCHIVE_NAME, "ISATab")
 
     def test_exception_raised_if_post_body_is_not_json(self):
         with self.assertRaises(IsaArchiveCreatorBadRequest):

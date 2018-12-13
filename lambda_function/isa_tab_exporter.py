@@ -24,9 +24,9 @@ class IsaJSONValidationError(IsaArchiveCreatorBadRequest):
 
 
 class IsaArchiveCreator:
-    DEFAULT_ISATAB_NAME = "ISATab"
+    DEFAULT_ISA_ARCHIVE_NAME = "ISATab"
 
-    def __init__(self, post_body, isatab_filename=DEFAULT_ISATAB_NAME):
+    def __init__(self, post_body, isatab_filename=DEFAULT_ISA_ARCHIVE_NAME):
         self.temp_dir = self._get_temp_dir()
         self.conversion_dir = os.path.join(
             self.temp_dir, "json2isatab_output/"
@@ -139,7 +139,7 @@ class IsaArchiveCreator:
 
 def create_response(
     response_body,
-    isatab_filename=IsaArchiveCreator.DEFAULT_ISATAB_NAME,
+    isatab_filename=IsaArchiveCreator.DEFAULT_ISA_ARCHIVE_NAME,
     status_code=200,
 ):
     response = {"statusCode": status_code, "body": response_body}
