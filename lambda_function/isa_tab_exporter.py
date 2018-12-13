@@ -115,7 +115,8 @@ class IsaArchiveCreator:
 
         logger.info(f"{self.isatab_name} file names: {isa_archive.namelist()}")
 
-    def _get_temp_dir(self):
+    @staticmethod
+    def _get_temp_dir():
         # NOTE: only /tmp/ is writable within an AWS Lambda function
         return "/tmp/"
 

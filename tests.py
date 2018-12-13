@@ -153,6 +153,11 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
         self.assertEqual(isa_creator.isatab_name, "Cool ISATab")
 
 
+class IsaArchiveCreatorTestsNoMocks(unittest.TestCase):
+    def test__get_temp_dir(self):
+        self.assertEqual(IsaArchiveCreator._get_temp_dir(), "/tmp/")
+
+
 class IsaTabExporterTests(TemporaryDirectoryTestCase):
     def setUp(self):
         super().setUp()
