@@ -5,6 +5,7 @@ import json
 import mock
 import os
 import shutil
+import sys
 import tempfile
 import unittest
 import zipfile
@@ -156,6 +157,9 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
 class IsaArchiveCreatorTestsNoMocks(unittest.TestCase):
     def test__get_temp_dir(self):
         self.assertEqual(IsaArchiveCreator._get_temp_dir(), "/tmp/")
+
+    def test___python_reqs___is_on_pythonpath(self):
+        self.assertIn("__python_reqs__", sys.path[0])
 
 
 class IsaTabExporterTests(TemporaryDirectoryTestCase):
