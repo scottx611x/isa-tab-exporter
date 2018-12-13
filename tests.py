@@ -3,6 +3,7 @@ import base64
 from io import BytesIO
 import json
 import mock
+import os
 import tempfile
 import unittest
 import zipfile
@@ -54,6 +55,9 @@ class IsaArchiveCreatorTests(unittest.TestCase):
             )
         )
 
+    def test_isatab_name_is_set(self):
+        self.assertEqual(TEST_ISA_ARCHIVE_NAME, self.isa_creator.isatab_name)
+
     def test_isatab_contents_is_set(self):
         self.assertIsNotNone(self.isa_creator.isatab_contents)
 
@@ -61,6 +65,24 @@ class IsaArchiveCreatorTests(unittest.TestCase):
         self.assertEqual(
             f"{self.temp_test_dir}{TEST_ISA_ARCHIVE_NAME}.zip",
             self.isa_creator.isa_archive_path,
+        )
+
+    def test_post_body_is_set(self):
+        self.assertIsNotNone(self.isa_creator.post_body)
+
+    def test_temp_dir_is_set(self):
+        self.assertEqual(self.temp_test_dir, self.isa_creator.temp_dir)
+
+    def test_conversion_dir_is_set(self):
+        self.assertEqual(
+            os.path.join(self.temp_test_dir, "json2isatab_output/"),
+            self.isa_creator.conversion_dir
+        )
+
+    def test_isa_json_path_is_set(self):
+        self.assertEqual(
+            os.path.join(self.temp_test_dir, "isa.json"),
+            self.isa_creator.isa_json_path
         )
 
     def test_zip_is_stripped_from_isatab_name_if_provided(self):
