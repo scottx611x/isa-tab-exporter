@@ -79,7 +79,7 @@ class IsaArchiveCreator:
             investigation_file_object.name
         )
         logger.info(
-            f"Lodaing ISATab objects from investigation file: "
+            f"Loading ISATab objects from investigation file: "
             f"`{investigation_file_object.name}`"
         )
         isa_tab = isatab.load(investigation_file_object)
