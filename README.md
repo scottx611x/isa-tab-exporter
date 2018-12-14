@@ -31,15 +31,17 @@ $ nosetests -a 'slow'
 ### Manual deployment:
 The `deploy.sh` script will build the Lambda's python reqs using an Amazon Linux docker container, and provision the AWS infrastructure using Terraform.
 
-- `./deploy.sh`
-    - Terraform will spit out the base URL of the current API Gateway deployment
-        ```
-        Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
+```bash
+$ ./deploy.sh
 
-        Outputs:
+...
 
-        api_gateway_deployment_invoke_url = https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export
-        ```
+Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+api_gateway_deployment_invoke_url = https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export
+```
 
 ### CI/CD:
 The Terraform code will be run in Travis-CI upon successful `master` branch builds deploying the latest version of the APIGateway/Lambda to the `production` APIGateway stage.
@@ -47,7 +49,7 @@ The Terraform code will be run in Travis-CI upon successful `master` branch buil
 ### Example Usage:
 
 **cURL**
-```
+```bash
 $ curl -X POST \
   -O \ # -O, --remote-name   Write output to a file named as the remote file
   -J \ #  -J, --remote-header-name Use the header-provided filename
