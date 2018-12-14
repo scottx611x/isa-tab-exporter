@@ -54,7 +54,7 @@ $ curl -X POST \
   https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export \
   -d '{
     "isatab_filename": "My Cool ISATab",
-    "isatab_contents": <Valid ISA-JSON content (Take a peek at test_data/*)>
+    "isatab_contents": <Valid ISA-JSON content (Take a peek at test_data/isa_json/*)>
 }'
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
