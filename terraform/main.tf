@@ -1,6 +1,6 @@
 provider "aws" {
   region  = "us-east-1"
-  profile = "scottx611x@gmail.com"
+  profile = "${var.aws_profile_name}"
 }
 
 module api_gateway {
