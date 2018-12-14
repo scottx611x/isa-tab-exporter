@@ -236,7 +236,8 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
         )
         self.assertEqual(
             {
-                "body": "POST body is not valid JSON: the JSON object must "
+                "body": "Bad Request: POST body is not valid JSON: the JSON "
+                "object must "
                 "be str, bytes or bytearray, not 'dict'",
                 "statusCode": 400,
             },
@@ -250,7 +251,8 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
         self.assertEqual(
             {
                 "body": (
-                    "`isatab_contents` are required in the POST request body."
+                    "Bad Request: `isatab_contents` are required in the POST "
+                    "request body."
                 ),
                 "statusCode": 400,
             },
@@ -291,7 +293,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
         )
         self.assertEqual(
             {
-                "body": str(
+                "body": "Bad Request: {}".format(
                     [
                         {
                             "message": "JSON Error",
