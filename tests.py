@@ -96,7 +96,7 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
             IsaArchiveCreator(json.dumps({}))
 
     @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    @attr('slow')
+    @attr("slow")
     def test_create_base64_encoded_isatab_archive(self, isa_json_filename):
         base64.decodebytes(
             self.isa_creator(isa_json_filename)
@@ -262,7 +262,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             )
 
     @parameterized.expand(TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES)
-    @attr('slow')
+    @attr("slow")
     def test_post_handler_lambda_response_contains_valid_zip(
         self, isa_json_filename, expected_zip_filenames
     ):
