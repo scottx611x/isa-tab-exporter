@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "isatab-exporter-api" {
   name        = "isatab-exporter-api"
-  description = "ISATab Exporter API"
+  description = "ISA-Tab Exporter API"
 }
 
 resource "aws_api_gateway_resource" "isatab-exporter-resource" {

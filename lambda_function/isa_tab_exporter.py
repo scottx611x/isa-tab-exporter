@@ -41,7 +41,7 @@ class IsaArchiveCreator:
 
     """
 
-    DEFAULT_ISA_ARCHIVE_NAME = "ISATab"
+    DEFAULT_ISA_ARCHIVE_NAME = "ISA-Tab"
 
     def __init__(self, isa_json, isatab_filename=DEFAULT_ISA_ARCHIVE_NAME):
         self.temp_dir = self._get_temp_dir()
@@ -106,7 +106,7 @@ class IsaArchiveCreator:
             investigation_file_object.name
         )
         logger.info(
-            f"Loading ISATab objects from investigation file: "
+            f"Loading ISA-Tab objects from investigation file: "
             f"`{investigation_file_object.name}`"
         )
         isa_tab = isatab.load(investigation_file_object)

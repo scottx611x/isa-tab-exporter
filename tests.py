@@ -86,7 +86,7 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
         self.isa_creator = isa_creator
 
     def test_default_isatab_zip_name(self):
-        self.assertEqual(IsaArchiveCreator.DEFAULT_ISA_ARCHIVE_NAME, "ISATab")
+        self.assertEqual(IsaArchiveCreator.DEFAULT_ISA_ARCHIVE_NAME, "ISA-Tab")
 
     def test_exception_raised_if_post_body_is_not_json(self):
         with self.assertRaises(IsaArchiveCreatorBadRequest):
@@ -139,12 +139,12 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
         isa_creator = IsaArchiveCreator(
             json.dumps(
                 {
-                    "isatab_filename": "Cool ISATab.zip",
+                    "isatab_filename": "Cool ISA-Tab.zip",
                     "isatab_contents": {"test": "content"},
                 }
             )
         )
-        self.assertEqual(isa_creator.isatab_name, "Cool ISATab")
+        self.assertEqual(isa_creator.isatab_name, "Cool ISA-Tab")
 
 
 class IsaArchiveCreatorTestsNoMocks(unittest.TestCase):
@@ -213,7 +213,8 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
                 "headers": {
                     "Content-Encoding": "zip",
                     "Content-Type": "application/zip",
-                    "Content-Disposition": 'attachment; filename="ISATab.zip"',
+                    "Content-Disposition": "attachment; "
+                    'filename="ISA-Tab.zip"',
                 },
                 "isBase64Encoded": True,
                 "statusCode": 200,
