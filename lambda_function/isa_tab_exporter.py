@@ -25,7 +25,9 @@ class IsaJSONValidationError(IsaArchiveCreatorBadRequest):
 
 class IsaArchiveCreator:
     """
-        Generate an ISA Archive .zip file from valid ISAJSON contents
+        Generate an ISA Archive .zip file from valid ISA-JSON contents
+
+        ISA-JSON Spec: https://isa-specs.readthedocs.io/en/latest/isajson.html
 
         Example Usage:
         >>> with open('test_data/BII-S-3.json') as isa_json:

@@ -18,7 +18,7 @@ from lambda_function.isa_tab_exporter import (
 from parameterized import parameterized
 
 
-TEST_ISA_ARCHIVE_NAME = "Test ISAJSON-based ISA Archive"
+TEST_ISA_ARCHIVE_NAME = "Test ISA Archive"
 TEST_ISA_JSON_FILENAMES = os.listdir("test_data")
 
 TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES = [
