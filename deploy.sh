@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 
 # install lambda's python requirements
 docker run -it -v "$PWD/lambda_function":/lambda_build_dir \
