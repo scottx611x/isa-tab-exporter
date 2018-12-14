@@ -87,7 +87,7 @@ class IsaArchiveCreator:
         with open(
             os.path.join(self.conversion_dir, "i_investigation.txt")
         ) as investigation:
-            self._create_isatab_archive(investigation)
+            self._create_isa_archive(investigation)
 
         with open(self.isa_archive_path, "rb") as isa_archive:
             return base64.b64encode(isa_archive.read()).decode("ascii")
@@ -101,7 +101,7 @@ class IsaArchiveCreator:
                 isa_json, self.conversion_dir, validate_first=False
             )
 
-    def _create_isatab_archive(self, investigation_file_object):
+    def _create_isa_archive(self, investigation_file_object):
         investigation_directory_name = os.path.dirname(
             investigation_file_object.name
         )
@@ -113,27 +113,22 @@ class IsaArchiveCreator:
 
         logger.info(f"Zipping {self.isatab_name} to {self.isa_archive_path}")
 
-        with ZipFile(self.isa_archive_path, mode="w") as isa_archive:
+        def _write_to_isa_archive(file_path):
             isa_archive.write(
-                investigation_file_object.name,
-                arcname=os.path.basename(investigation_file_object.name),
+                os.path.join(investigation_directory_name, file_path),
+                arcname=file_path,
+            )
+
+        with ZipFile(self.isa_archive_path, mode="w") as isa_archive:
+            _write_to_isa_archive(
+                os.path.basename(investigation_file_object.name)
             )
 
             for study in isa_tab.studies:
-                study_filename = study.filename
-                isa_archive.write(
-                    os.path.join(investigation_directory_name, study_filename),
-                    arcname=study_filename,
-                )
+                _write_to_isa_archive(study.filename)
 
                 for assay in study.assays:
-                    assay_filename = assay.filename
-                    isa_archive.write(
-                        os.path.join(
-                            investigation_directory_name, assay_filename
-                        ),
-                        arcname=assay_filename,
-                    )
+                    _write_to_isa_archive(assay.filename)
 
         logger.info(f"{self.isatab_name} file names: {isa_archive.namelist()}")
 
