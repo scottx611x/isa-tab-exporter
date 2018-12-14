@@ -19,6 +19,7 @@ from lambda_function.isa_tab_exporter import (
 from nose.plugins.attrib import attr
 from parameterized import parameterized
 
+SLOW_TEST_TAG = "slow"
 
 TEST_ISA_ARCHIVE_NAME = "Test ISA Archive"
 TEST_ISA_JSON_DIR = "test_data/isa_json/"
@@ -96,7 +97,7 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
             IsaArchiveCreator(json.dumps({}))
 
     @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    @attr("slow")
+    @attr(SLOW_TEST_TAG)
     def test_create_base64_encoded_isatab_archive(self, isa_json_filename):
         base64.decodebytes(
             self.isa_creator(isa_json_filename)
@@ -179,7 +180,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
 
         self.test_context = LambdaContext()
 
-    @attr("slow")
+    @attr(SLOW_TEST_TAG)
     def test_post_handler_lambda_response_with_provided_filename(self):
         lambda_response = post_handler(
             self.test_event("BII-S-3.json"), self.test_context
@@ -199,7 +200,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             lambda_response,
         )
 
-    @attr("slow")
+    @attr(SLOW_TEST_TAG)
     def test_post_handler_lambda_response_without_provided_filename(self):
         with open(f"{TEST_ISA_JSON_DIR}BII-S-3.json") as sample_json:
             isatab_contents = json.loads(sample_json.read())
@@ -262,7 +263,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             )
 
     @parameterized.expand(TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES)
-    @attr("slow")
+    @attr(SLOW_TEST_TAG)
     def test_post_handler_lambda_response_contains_valid_zip(
         self, isa_json_filename, expected_zip_filenames
     ):
