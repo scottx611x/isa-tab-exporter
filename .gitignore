@@ -7,5 +7,6 @@ lambda_function/__python_reqs__/*
 
 terraform/lambda_function.zip
 .terraform
+terraform.tfvars
 terraform.tfstate*
 .coverage
