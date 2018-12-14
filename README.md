@@ -64,7 +64,7 @@ curl: Saved to filename 'My Cool ISA-Tab.zip'
 ```
 
 **Postman**
-![dec-14-2018 11-34-53](https://user-images.githubusercontent.com/5629547/50015348-5ae50000-ff94-11e8-98c9-f73e2043311b.gif)
+![dec-14-2018 13-16-10](https://user-images.githubusercontent.com/5629547/50019956-7c4ce880-ffa2-11e8-87c1-e7b94c4df381.gif)
 
 ### Development Notes:
 - By default terraform will utilize the credentials from the `default` AWS Profile that is available on the system. `isa-tab-exporter/terraform/terraform.tfvars` can be created with an entry like `aws_profile_name = "<desired_aws_profile_name>"` to override this.
