@@ -17,6 +17,17 @@ Specifically, an API Gateway deployment is created that accepts these POST reque
 - `pip install -r requirements-test.txt`
 - `nosetests`
 
+**Note:** Some of the provided tests are end-to-end tests and are a bit slow.
+ Run fast or slow tests in isolation with the following commands:
+
+```bash
+# Just the speedy ones
+$ nosetests -a '!slow'
+
+# Just the slow ones
+$ nosetests -a 'slow'
+```
+
 ### Manual deployment:
 The `deploy.sh` script will build the Lambda's python reqs using an Amazon Linux docker container, and provision the AWS infrastructure using Terraform.
 

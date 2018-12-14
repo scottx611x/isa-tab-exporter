@@ -15,11 +15,14 @@ from lambda_function.isa_tab_exporter import (
     IsaArchiveCreatorBadRequest,
     api_gateway_post_handler as post_handler,
 )
+
+from nose.plugins.attrib import attr
 from parameterized import parameterized
 
 
 TEST_ISA_ARCHIVE_NAME = "Test ISA Archive"
-TEST_ISA_JSON_FILENAMES = os.listdir("test_data")
+TEST_ISA_JSON_DIR = "test_data/isa_json/"
+TEST_ISA_JSON_FILENAMES = os.listdir(TEST_ISA_JSON_DIR)
 
 TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES = [
     (
@@ -67,8 +70,10 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
     def setUp(self):
         super().setUp()
 
-        def isa_creator(isa_json_filename):
-            with open(f"test_data/{isa_json_filename}") as sample_json:
+        def isa_creator(isa_json_filename="BII-S-3.json"):
+            with open(
+                f"{TEST_ISA_JSON_DIR}{isa_json_filename}"
+            ) as sample_json:
                 post_body = json.dumps(
                     {
                         "isatab_filename": TEST_ISA_ARCHIVE_NAME,
@@ -91,6 +96,7 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
             IsaArchiveCreator(json.dumps({}))
 
     @parameterized.expand(TEST_ISA_JSON_FILENAMES)
+    @attr('slow')
     def test_create_base64_encoded_isatab_archive(self, isa_json_filename):
         base64.decodebytes(
             self.isa_creator(isa_json_filename)
@@ -98,48 +104,34 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
             .encode("ascii")
         )
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_isatab_name_is_set(self, isa_json_filename):
-        self.assertEqual(
-            TEST_ISA_ARCHIVE_NAME,
-            self.isa_creator(isa_json_filename).isatab_name,
-        )
+    def test_isatab_name_is_set(self):
+        self.assertEqual(TEST_ISA_ARCHIVE_NAME, self.isa_creator().isatab_name)
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_isatab_contents_is_set(self, isa_json_filename):
-        self.assertIsNotNone(
-            self.isa_creator(isa_json_filename).isatab_contents
-        )
+    def test_isatab_contents_is_set(self):
+        self.assertIsNotNone(self.isa_creator().isatab_contents)
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_isa_archive_path_is_set(self, isa_json_filename):
+    def test_isa_archive_path_is_set(self):
         self.assertEqual(
             f"{self.temp_test_dir}{TEST_ISA_ARCHIVE_NAME}.zip",
-            self.isa_creator(isa_json_filename).isa_archive_path,
+            self.isa_creator().isa_archive_path,
         )
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_post_body_is_set(self, isa_json_filename):
-        self.assertIsNotNone(self.isa_creator(isa_json_filename).post_body)
+    def test_post_body_is_set(self):
+        self.assertIsNotNone(self.isa_creator().post_body)
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_temp_dir_is_set(self, isa_json_filename):
-        self.assertEqual(
-            self.temp_test_dir, self.isa_creator(isa_json_filename).temp_dir
-        )
+    def test_temp_dir_is_set(self):
+        self.assertEqual(self.temp_test_dir, self.isa_creator().temp_dir)
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_conversion_dir_is_set(self, isa_json_filename):
+    def test_conversion_dir_is_set(self):
         self.assertEqual(
             os.path.join(self.temp_test_dir, "json2isatab_output/"),
-            self.isa_creator(isa_json_filename).conversion_dir,
+            self.isa_creator().conversion_dir,
         )
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_isa_json_path_is_set(self, isa_json_filename):
+    def test_isa_json_path_is_set(self):
         self.assertEqual(
             os.path.join(self.temp_test_dir, "isa.json"),
-            self.isa_creator(isa_json_filename).isa_json_path,
+            self.isa_creator().isa_json_path,
         )
 
     def test_zip_is_stripped_from_isatab_name_if_provided(self):
@@ -167,7 +159,9 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
         super().setUp()
 
         def create_test_event(isa_json_filename):
-            with open(f"test_data/{isa_json_filename}") as sample_json:
+            with open(
+                f"{TEST_ISA_JSON_DIR}{isa_json_filename}"
+            ) as sample_json:
                 isatab_contents = json.loads(sample_json.read())
             return {
                 "body": json.dumps(
@@ -185,12 +179,10 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
 
         self.test_context = LambdaContext()
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_post_handler_lambda_response_with_provided_filename(
-        self, isa_json_filename
-    ):
+    @attr("slow")
+    def test_post_handler_lambda_response_with_provided_filename(self):
         lambda_response = post_handler(
-            self.test_event(isa_json_filename), self.test_context
+            self.test_event("BII-S-3.json"), self.test_context
         )
         self.assertDictContainsSubset(
             {
@@ -207,11 +199,9 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             lambda_response,
         )
 
-    @parameterized.expand(TEST_ISA_JSON_FILENAMES)
-    def test_post_handler_lambda_response_without_provided_filename(
-        self, isa_json_filename
-    ):
-        with open(f"test_data/{isa_json_filename}") as sample_json:
+    @attr("slow")
+    def test_post_handler_lambda_response_without_provided_filename(self):
+        with open(f"{TEST_ISA_JSON_DIR}BII-S-3.json") as sample_json:
             isatab_contents = json.loads(sample_json.read())
         lambda_response = post_handler(
             {"body": json.dumps({"isatab_contents": isatab_contents})},
@@ -272,6 +262,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             )
 
     @parameterized.expand(TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES)
+    @attr('slow')
     def test_post_handler_lambda_response_contains_valid_zip(
         self, isa_json_filename, expected_zip_filenames
     ):
