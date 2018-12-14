@@ -45,6 +45,8 @@ The `deploy.sh` script will build the Lambda's python reqs using an Amazon Linux
 The Terraform code will be run in Travis-CI upon successful `master` branch builds deploying the latest version of the APIGateway/Lambda to the `production` APIGateway stage.
 
 ### Example Usage:
+
+**cURL**
 ```
 $ curl -X POST \
   -O \ # -O, --remote-name   Write output to a file named as the remote file
@@ -61,14 +63,20 @@ $ curl -X POST \
 curl: Saved to filename 'My Cool ISATab.zip'
 ```
 
+**Postman**
+![dec-14-2018 11-34-53](https://user-images.githubusercontent.com/5629547/50015348-5ae50000-ff94-11e8-98c9-f73e2043311b.gif)
+
 ### Development Notes:
-Currently we are using [`flake8`](https://github.com/PyCQA/flake8) & [`black`](https://github.com/ambv/black) in CI to lint and format our Python code, respectively. These tools can be run outside of CI using the following commands:
-- `black --diff .`
-- `flake8`
+- By default terraform will utilize the credentials from the `default` AWS Profile that is available on the system. `isa-tab-exporter/terraform/terraform.tfvars` can be created with an entry like `aws_profile_name = "<desired_aws_profile_name>"` to override this.
+
+- Currently we are using [`flake8`](https://github.com/PyCQA/flake8) & [`black`](https://github.com/ambv/black) in CI to lint and format our Python code, respectively. These tools can be run outside of CI using the following commands:
+  - `black --diff .`
+  - `flake8`
 
 ---
 
+**Lambda & Triggers**
 ![screen shot 2018-12-10 at 2 53 16 pm](https://user-images.githubusercontent.com/5629547/49757849-692cd680-fc8b-11e8-833a-f5cd3e45ed1e.png)
 
-
+**APIGateway Setup**
 ![screen shot 2018-12-10 at 4 34 03 pm](https://user-images.githubusercontent.com/5629547/49763058-9aac9e80-fc99-11e8-9634-13d85a8093d7.png)
