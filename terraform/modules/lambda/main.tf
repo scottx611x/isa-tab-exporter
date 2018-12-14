@@ -17,8 +17,8 @@ resource "aws_lambda_function" "isatab_exporter_lambda" {
   runtime          = "python3.6"
   s3_bucket        = "${var.s3_bucket}"
   s3_key           = "${var.lambda_zip_name}"
-  timeout          = 45
-  memory_size      = 256
+  timeout          = 20
+  memory_size      = "${var.lambda_memory_size}"
   publish          = true
 }
 
