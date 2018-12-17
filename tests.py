@@ -10,11 +10,12 @@ import tempfile
 import unittest
 import zipfile
 
-from lambda_function.isa_tab_exporter import (
-    IsaArchiveCreator,
-    IsaArchiveCreatorBadRequest,
+from lambda_function.lambda_function import (
     api_gateway_post_handler as post_handler,
 )
+from lambda_function.lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
+from lambda_function.lambda_utils.isa_archive_creator import IsaArchiveCreator
+from lambda_function.lambda_utils.utils import IsaArchiveCreatorBadRequest
 
 from nose.plugins.attrib import attr
 from parameterized import parameterized
@@ -54,6 +55,11 @@ TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES = [
 ]
 
 
+class ConstantsTests(unittest.TestCase):
+    def test_default_isatab_zip_name(self):
+        self.assertEqual(DEFAULT_ISA_ARCHIVE_NAME, "ISA-Tab")
+
+
 class TemporaryDirectoryTestCase(unittest.TestCase):
     def setUp(self):
         self.temp_test_dir = tempfile.mkdtemp() + "/"
@@ -84,9 +90,6 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
             return IsaArchiveCreator(post_body)
 
         self.isa_creator = isa_creator
-
-    def test_default_isatab_zip_name(self):
-        self.assertEqual(IsaArchiveCreator.DEFAULT_ISA_ARCHIVE_NAME, "ISA-Tab")
 
     def test_exception_raised_if_post_body_is_not_json(self):
         with self.assertRaises(IsaArchiveCreatorBadRequest):
