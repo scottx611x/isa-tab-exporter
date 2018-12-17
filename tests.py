@@ -10,7 +10,9 @@ import tempfile
 import unittest
 import zipfile
 
-from lambda_function.lambda_function import api_gateway_post_handler as post_handler
+from lambda_function.lambda_function import (
+    api_gateway_post_handler as post_handler,
+)
 from lambda_function.lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
 from lambda_function.lambda_utils.isa_archive_creator import IsaArchiveCreator
 from lambda_function.lambda_utils.utils import IsaArchiveCreatorBadRequest
