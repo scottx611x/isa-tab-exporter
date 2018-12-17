@@ -4,7 +4,6 @@
 docker run -it -v "$PWD/lambda_function":/lambda_build_dir \
     scottx611x/aws-linux-python-3.6 \
         /usr/bin/pip-3.6 install \
-        --force-reinstall \
         -r /lambda_build_dir/requirements.txt \
         -t /lambda_build_dir/__python_reqs__
 
