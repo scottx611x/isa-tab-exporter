@@ -1,3 +1,0 @@
-[flake8]
-ignore = E402
-exclude=lambda_function/__python_reqs__/*

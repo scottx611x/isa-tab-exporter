@@ -54,3 +54,20 @@ resource "aws_api_gateway_deployment" "isatab-exporter-deployment" {
   rest_api_id = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
   stage_name  = "${var.api_gateway_stage_name}"
 }
+
+resource "aws_api_gateway_domain_name" "isatab-exporter-domain-name" {
+  certificate_arn = "${var.acm_certificate_arn}"
+  domain_name     = "${var.domain_name}"
+
+  count = "${var.use_custom_domain ? 1 : 0}"
+}
+
+resource "aws_api_gateway_base_path_mapping" "isatab-exporter-base-path-mapping" {
+  api_id      = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
+  stage_name  = "${var.api_gateway_stage_name}"
+  domain_name = "${var.domain_name}"
+
+  count = "${var.use_custom_domain ? 1 : 0}"
+
+  depends_on = ["aws_api_gateway_domain_name.isatab-exporter-domain-name"]
+}

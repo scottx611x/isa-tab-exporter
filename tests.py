@@ -10,12 +10,12 @@ import tempfile
 import unittest
 import zipfile
 
-from lambda_function.lambda_function import (
-    api_gateway_post_handler as post_handler,
-)
-from lambda_function.lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
-from lambda_function.lambda_utils.isa_archive_creator import IsaArchiveCreator
-from lambda_function.lambda_utils.utils import IsaArchiveCreatorBadRequest
+sys.path.insert(0, "lambda_function")
+
+from lambda_function import api_gateway_post_handler as post_handler
+from lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
+from lambda_utils.isa_archive_creator import IsaArchiveCreator
+from lambda_utils.utils import IsaArchiveCreatorBadRequest
 
 from nose.plugins.attrib import attr
 from parameterized import parameterized
@@ -255,8 +255,9 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
         )
 
     def test_post_handler_lambda_response_handles_unexpected_errors(self):
-        with mock.patch.object(
-            IsaArchiveCreator, "run", side_effect=RuntimeError("Oh No!")
+        with mock.patch(
+            "lambda_utils.isa_archive_creator.IsaArchiveCreator.run",
+            side_effect=RuntimeError("Oh No!"),
         ):
             lambda_response = post_handler(
                 self.test_event("BII-I-1.json"), self.test_context
