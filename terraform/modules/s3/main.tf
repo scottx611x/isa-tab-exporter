@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "isatab-exporter-bucket" {
-  bucket = "isatab-exporter-bucket"
+  bucket = "${var.s3_bucket_name}"
   acl    = "private"
 
   versioning {

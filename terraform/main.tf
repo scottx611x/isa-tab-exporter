@@ -3,6 +3,16 @@ provider "aws" {
   profile = "${var.aws_profile_name}"
 }
 
+provider "random" {
+  version = "~> 2.0"
+}
+
+resource "random_string" "s3_bucket_name_random_string" {
+  length  = 8
+  upper   = false
+  special = false
+}
+
 module api_gateway {
   source                     = "./modules/api_gateway"
   lambda_function_invoke_arn = "${module.lambda.lambda_function_invoke_arn}"
@@ -34,4 +44,5 @@ module s3 {
   source           = "./modules/s3"
   lambda_zip_name  = "${var.lambda_zip_name}"
   local_lambda_dir = "${var.local_lambda_dir}"
+  s3_bucket_name   = "isatab-exporter-bucket-${random_string.s3_bucket_name_random_string.result}"
 }
