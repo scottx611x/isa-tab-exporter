@@ -10,12 +10,10 @@ import tempfile
 import unittest
 import zipfile
 
-from lambda_function.lambda_function import (
-    api_gateway_post_handler as post_handler,
-)
-from lambda_function.lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
-from lambda_function.lambda_utils.isa_archive_creator import IsaArchiveCreator
-from lambda_function.lambda_utils.utils import IsaArchiveCreatorBadRequest
+from lambda_function import api_gateway_post_handler as post_handler
+from lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
+from lambda_utils.isa_archive_creator import IsaArchiveCreator
+from lambda_utils.utils import IsaArchiveCreatorBadRequest
 
 from nose.plugins.attrib import attr
 from parameterized import parameterized
@@ -23,7 +21,7 @@ from parameterized import parameterized
 SLOW_TEST_TAG = "slow"
 
 TEST_ISA_ARCHIVE_NAME = "Test ISA Archive"
-TEST_ISA_JSON_DIR = "test_data/isa_json/"
+TEST_ISA_JSON_DIR = "../test_data/isa_json/"
 TEST_ISA_JSON_FILENAMES = os.listdir(TEST_ISA_JSON_DIR)
 
 TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES = [
