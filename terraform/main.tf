@@ -36,7 +36,6 @@ module lambda {
   lambda_zip_hash                    = "${module.s3.lambda_zip_hash}"
   lambda_zip_name                    = "${var.lambda_zip_name}"
   lambda_zip_s3_object               = "${module.s3.lambda_zip_s3_object}"
-  local_lambda_dir                   = "${var.local_lambda_dir}"
   s3_bucket                          = "${module.s3.s3_bucket}"
 }
 
