@@ -1,8 +1,7 @@
 # isa-tab-exporter/terraform
 
-
 ### Creating the Infrastructure:
-- `$ terraform init && terraform plan`
+- `$ terraform init && terraform apply`
 
 ### Destroying the Infrastructure:
 - `$ terraform destroy`
