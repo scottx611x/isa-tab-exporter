@@ -6,8 +6,8 @@ import sys
 # Add Lambda's third-party reqs to PYTHONPATH
 sys.path.insert(0, os.path.abspath("__python_reqs__"))
 
-from lambda_utils.isa_archive_creator import IsaArchiveCreator
-from lambda_utils.utils import (
+from lambda_function.lambda_utils.isa_archive_creator import IsaArchiveCreator
+from lambda_function.lambda_utils.utils import (
     IsaArchiveCreatorBadRequest,
     create_api_gateway_response,
 )
