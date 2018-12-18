@@ -28,7 +28,7 @@ $ nosetests -a '!slow'
 $ nosetests -a 'slow'
 ```
 
-### Manual deployment:
+### Deployment:
 The `deploy.sh` script will build the Lambda's python reqs using an Amazon Linux docker container, and provision the AWS infrastructure using Terraform.
 
 ```bash
@@ -42,6 +42,8 @@ Outputs:
 
 api_gateway_deployment_invoke_url = https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export
 ```
+
+See the [terraform-instructions](https://github.com/scottx611x/isa-tab-exporter/tree/master/terraform#isa-tab-exporterterraform) for deployment to custom domain names, among other things.
 
 ### CI/CD:
 The Terraform code will be run in Travis-CI upon successful `master` branch builds deploying the latest version of the APIGateway/Lambda to the `production` APIGateway stage.
