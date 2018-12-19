@@ -3,7 +3,7 @@
 
 
 # install lambda's python requirements
-docker run -it -v "$1/lambda_function":/lambda_build_dir \
+docker run -it -v "$1":/lambda_build_dir \
     scottx611x/aws-linux-python-3.6 \
         /usr/bin/pip-3.6 install \
         -r /lambda_build_dir/requirements.txt \
