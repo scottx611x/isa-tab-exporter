@@ -10,6 +10,7 @@ import tempfile
 import unittest
 import zipfile
 
+# Add lambda_function to PYTHONPATH
 sys.path.insert(0, "lambda_function")
 
 from lambda_function import api_gateway_post_handler as post_handler
