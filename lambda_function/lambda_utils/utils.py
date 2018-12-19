@@ -1,4 +1,5 @@
 # coding=utf-8
+from http import HTTPStatus
 import logging
 
 from .constants import DEFAULT_ISA_ARCHIVE_NAME
@@ -16,7 +17,9 @@ class IsaJSONValidationError(IsaArchiveCreatorBadRequest):
 
 
 def create_api_gateway_response(
-    response_body, isatab_filename=DEFAULT_ISA_ARCHIVE_NAME, status_code=200
+    response_body,
+    isatab_filename=DEFAULT_ISA_ARCHIVE_NAME,
+    status_code=HTTPStatus.OK,
 ):
     """
     Generate HTTP response dict in the valid output format for a Lambda
@@ -26,7 +29,7 @@ def create_api_gateway_response(
     -proxy-integrations.html
     """
     response = {"statusCode": status_code, "body": response_body}
-    if status_code == 200:
+    if status_code is HTTPStatus.OK:
         response["headers"] = {
             "Content-Type": "application/zip",
             "Content-Encoding": "zip",

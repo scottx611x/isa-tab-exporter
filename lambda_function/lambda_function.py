@@ -1,4 +1,5 @@
 # coding=utf-8
+from http import HTTPStatus
 import logging
 import os
 import sys
@@ -24,10 +25,11 @@ def api_gateway_post_handler(event, context):
     except IsaArchiveCreatorBadRequest as e:
         logger.error(str(e))
         return create_api_gateway_response(
-            f"Bad Request: {e}", status_code=400
+            f"Bad Request: {e}", status_code=HTTPStatus.BAD_REQUEST
         )
     except Exception as e:
         logger.error(str(e))
         return create_api_gateway_response(
-            f"Unexpected Error: {e}", status_code=500
+            f"Unexpected Error: {e}",
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
         )
