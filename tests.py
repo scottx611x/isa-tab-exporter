@@ -1,5 +1,6 @@
 # coding=utf-8
 import base64
+import doctest
 from io import BytesIO
 import json
 import mock
@@ -305,4 +306,17 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
                 "statusCode": 400,
             },
             lambda_response,
+        )
+
+
+class DocTests(TemporaryDirectoryTestCase):
+    @attr(SLOW_TEST_TAG)
+    def test_lambda_utils_doctests(self):
+        import lambda_utils.isa_archive_creator
+
+        assert doctest.testmod(
+            lambda_utils.isa_archive_creator,
+            verbose=True,
+            report=True,
+            raise_on_error=True,
         )

@@ -17,20 +17,20 @@ logger.setLevel(logging.INFO)
 
 class IsaArchiveCreator:
     """
-        Generate an ISA Archive .zip file from valid ISA-JSON contents
+    Generate an ISA Archive .zip file from valid ISA-JSON contents
 
-        ISA-JSON Spec: https://isa-specs.readthedocs.io/en/latest/isajson.html
+    ISA-JSON Spec: https://isa-specs.readthedocs.io/en/latest/isajson.html
 
-        Example Usage:
-        >>> with open('test_data/BII-S-3.json') as isa_json:
-        ...     post_request_body = {
-        ...         "isatab_contents": json.loads(isa_json.read())
-        ...     }
-        ...     isa_archive_creator = IsaArchiveCreator(
-        ...         json.dumps(post_request_body)
-        ...     )
-        >>> isa_archive_creator.run()
-
+    Example Usage:
+    >>> with open('test_data/isa_json/BII-S-3.json') as isa_json:
+    ...     isa_archive_creator = IsaArchiveCreator(
+    ...         json.dumps({
+    ...             "isatab_filename": "BII-S-3",
+    ...             "isatab_contents": json.loads(isa_json.read())
+    ...         })
+    ...     )
+    >>> isa_archive_creator.run() #doctest: +ELLIPSIS
+    (..., 'BII-S-3')
     """
 
     def __init__(self, isa_json, isatab_filename=DEFAULT_ISA_ARCHIVE_NAME):
