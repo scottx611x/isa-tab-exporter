@@ -17,7 +17,8 @@ logger.setLevel(logging.INFO)
 
 class IsaArchiveCreator:
     """
-    Generate an ISA Archive .zip file from valid ISA-JSON contents
+    Generate an ISA Archive .zip file from valid ISA-JSON contents and
+    return the zip contents as a base64-encoded string
 
     ISA-JSON Spec: https://isa-specs.readthedocs.io/en/latest/isajson.html
 
