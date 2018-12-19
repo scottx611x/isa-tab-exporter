@@ -1,11 +1,7 @@
 # coding=utf-8
 from http import HTTPStatus
-import logging
 
 from .constants import DEFAULT_ISA_ARCHIVE_NAME
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 
 
 class IsaArchiveCreatorBadRequest(Exception):
