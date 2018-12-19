@@ -21,7 +21,9 @@ def api_gateway_post_handler(event, context):
     """Handle incoming POST request events that trigger our Lambda Function"""
     logger.info(f"Lambda function version: {context.function_version}")
     try:
-        return IsaArchiveCreator(event.get("body")).run()
+        return create_api_gateway_response(
+            *IsaArchiveCreator(event.get("body")).run()
+        )
     except IsaArchiveCreatorBadRequest as e:
         logger.error(str(e))
         return create_api_gateway_response(

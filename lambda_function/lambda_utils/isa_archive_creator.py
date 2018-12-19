@@ -9,11 +9,7 @@ from isatools import isatab, json2isatab
 from isatools.isajson import validate
 
 from .constants import DEFAULT_ISA_ARCHIVE_NAME
-from .utils import (
-    IsaArchiveCreatorBadRequest,
-    IsaJSONValidationError,
-    create_api_gateway_response,
-)
+from .utils import IsaArchiveCreatorBadRequest, IsaJSONValidationError
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -53,11 +49,10 @@ class IsaArchiveCreator:
                 f"POST body is not valid JSON: {e}"
             )
 
+        # Set isatab_name and remove trailing `.zip` if user provides it
         self.isatab_name = (
             self.post_body.get("isatab_filename") or isatab_filename
-        ).rstrip(
-            ".zip"
-        )  # Remove `.zip` if user provides it
+        ).rstrip(".zip")
 
         self.isa_archive_path = (
             os.path.join(self.temp_dir, self.isatab_name) + ".zip"
@@ -132,10 +127,7 @@ class IsaArchiveCreator:
         return "/tmp/"
 
     def run(self):
-        return create_api_gateway_response(
-            self.create_base64_encoded_isatab_archive(),
-            isatab_filename=self.isatab_name,
-        )
+        return self.create_base64_encoded_isatab_archive(), self.isatab_name
 
     def _validate_isa_json(self, isa_json_file):
         validation_dict = validate(isa_json_file)
