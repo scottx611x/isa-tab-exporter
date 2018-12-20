@@ -41,8 +41,7 @@ module lambda {
   api_gateway_resource_path          = "${module.api_gateway.api_gateway_resource_path}"
   iam_role_arn                       = "${module.iam.lambda_iam_role_arn}"
   lambda_zip_hash                    = "${module.s3.lambda_zip_hash}"
-  lambda_zip_name                    = "${var.lambda_zip_name}"
-  lambda_zip_s3_object               = "${module.s3.lambda_zip_s3_object}"
+  lambda_zip_s3_object_key           = "${module.s3.lambda_zip_s3_object_key}"
   s3_bucket                          = "${module.s3.s3_bucket}"
 }
 
