@@ -34,7 +34,7 @@ resource "aws_api_gateway_method_response" "200" {
   status_code = "200"
 }
 
-resource "aws_api_gateway_integration_response" "isatab-exporter-integration-post-response" {
+resource "aws_api_gateway_integration_response" "isatab-exporter-integration-post-response-200" {
   depends_on = [
     "aws_api_gateway_integration.isatab-exporter-integration",
   ]
@@ -43,6 +43,51 @@ resource "aws_api_gateway_integration_response" "isatab-exporter-integration-pos
   resource_id = "${aws_api_gateway_method.isatab-exporter-method.resource_id}"
   http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
   status_code = "${aws_api_gateway_method_response.200.status_code}"
+
+  # This doesn't do anything, just needed different values than the default for each aws_api_gateway_integration_response.selection_pattern
+  selection_pattern = "Ok"
+}
+
+resource "aws_api_gateway_method_response" "400" {
+  rest_api_id = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
+  resource_id = "${aws_api_gateway_resource.isatab-exporter-resource.id}"
+  http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
+  status_code = "400"
+}
+
+resource "aws_api_gateway_integration_response" "isatab-exporter-integration-post-response-400" {
+  depends_on = [
+    "aws_api_gateway_integration.isatab-exporter-integration",
+  ]
+
+  rest_api_id = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
+  resource_id = "${aws_api_gateway_method.isatab-exporter-method.resource_id}"
+  http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
+  status_code = "${aws_api_gateway_method_response.400.status_code}"
+
+  # This doesn't do anything, just needed different values than the default for each aws_api_gateway_integration_response.selection_pattern
+  selection_pattern = "Bad Request"
+}
+
+resource "aws_api_gateway_method_response" "500" {
+  rest_api_id = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
+  resource_id = "${aws_api_gateway_resource.isatab-exporter-resource.id}"
+  http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
+  status_code = "500"
+}
+
+resource "aws_api_gateway_integration_response" "isatab-exporter-integration-post-response-500" {
+  depends_on = [
+    "aws_api_gateway_integration.isatab-exporter-integration",
+  ]
+
+  rest_api_id = "${aws_api_gateway_rest_api.isatab-exporter-api.id}"
+  resource_id = "${aws_api_gateway_method.isatab-exporter-method.resource_id}"
+  http_method = "${aws_api_gateway_method.isatab-exporter-method.http_method}"
+  status_code = "${aws_api_gateway_method_response.500.status_code}"
+
+  # This doesn't do anything, just needed different values than the default for each aws_api_gateway_integration_response.selection_pattern
+  selection_pattern = "Unexpected Error"
 }
 
 resource "aws_api_gateway_deployment" "isatab-exporter-deployment" {
