@@ -71,8 +71,14 @@ class IsaArchiveCreator:
             self.isatab_contents = isatab_contents
 
     def create_base64_encoded_isatab_archive(self):
+        logger.info("Creating base64 encoded ISA-Tab archive")
         self._write_out_isa_json_contents()
         self._convert_isa_json_to_isatab()
+
+        logger.info(
+            f"{self.conversion_dir} contents: "
+            f"{os.listdir(self.conversion_dir)}"
+        )
 
         with open(
             os.path.join(self.conversion_dir, "i_investigation.txt")
@@ -83,6 +89,9 @@ class IsaArchiveCreator:
             return base64.b64encode(isa_archive.read()).decode("ascii")
 
     def _convert_isa_json_to_isatab(self):
+        logger.info(
+            f"Converting ISA-JSON from: {self.isa_json_path} to an ISA-Tab"
+        )
         with open(self.isa_json_path) as isa_json:
             self._validate_isa_json(isa_json)
             # Reset isa_json file pointer after read in _validate_isa_json()
@@ -96,19 +105,22 @@ class IsaArchiveCreator:
             investigation_file_object.name
         )
         logger.info(
-            f"Loading ISA-Tab objects from investigation file: "
+            f"Loading ISA-Tab object from investigation file: "
             f"`{investigation_file_object.name}`"
         )
         isa_tab = isatab.load(investigation_file_object)
-
-        logger.info(f"Zipping {self.isatab_name} to {self.isa_archive_path}")
+        logger.info(f"Created ISA-Tab object: {isa_tab}")
 
         def _write_to_isa_archive(file_path):
+            logger.info(
+                f"Writing: {file_path} to {investigation_directory_name}"
+            )
             isa_archive.write(
                 os.path.join(investigation_directory_name, file_path),
                 arcname=file_path,
             )
 
+        logger.info(f"Zipping {self.isatab_name} to {self.isa_archive_path}")
         with ZipFile(self.isa_archive_path, mode="w") as isa_archive:
             _write_to_isa_archive(
                 os.path.basename(investigation_file_object.name)
