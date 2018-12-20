@@ -33,4 +33,6 @@ def create_api_gateway_response(
             ),
         }
         response["isBase64Encoded"] = True
+    else:
+        response["headers"] = {"Content-Type": "application/json"}
     return response
