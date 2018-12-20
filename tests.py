@@ -315,4 +315,3 @@ class DocTests(TemporaryDirectoryTestCase):
 class UtilsTests(unittest.TestCase):
     def test_get_temp_dir(self):
         self.assertEqual(get_temp_dir(), "/tmp/")
-
