@@ -1,22 +1,11 @@
-//Note: This is a workaround required due to the S3 upload of the Lambda .zip
-//taking enough time for it not to be available when creating the lambda function.
-// See: https://github.com/hashicorp/terraform/issues/16983#issuecomment-434141081
-resource "null_resource" "lambda_zip_upload_workaround" {
-  triggers {
-    lambda_zip_s3_object = "${var.lambda_zip_s3_object}"
-  }
-}
-
 resource "aws_lambda_function" "isatab_exporter_lambda" {
-  depends_on = ["null_resource.lambda_zip_upload_workaround"]
-
   function_name    = "isatab-exporter"
   role             = "${var.iam_role_arn}"
   handler          = "lambda_function.api_gateway_post_handler"
   source_code_hash = "${var.lambda_zip_hash}"
   runtime          = "python3.6"
   s3_bucket        = "${var.s3_bucket}"
-  s3_key           = "${var.lambda_zip_name}"
+  s3_key           = "${var.lambda_zip_s3_object_key}"
   timeout          = 20
   memory_size      = "${var.lambda_memory_size}"
   publish          = true

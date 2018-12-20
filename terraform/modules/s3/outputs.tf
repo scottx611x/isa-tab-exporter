@@ -1,5 +1,5 @@
-output "lambda_zip_s3_object" {
-  value = "${aws_s3_bucket_object.isatab-exporter-lambda-zip.id}"
+output "lambda_zip_s3_object_key" {
+  value = "${aws_s3_bucket_object.isatab-exporter-lambda-zip.key}"
 }
 
 output "lambda_zip_hash" {

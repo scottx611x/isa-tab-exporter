@@ -10,6 +10,5 @@ variable lambda_memory_size {
 }
 
 variable lambda_zip_hash {}
-variable lambda_zip_name {}
-variable lambda_zip_s3_object {}
+variable lambda_zip_s3_object_key {}
 variable s3_bucket {}
