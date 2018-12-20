@@ -36,3 +36,8 @@ def create_api_gateway_response(
     else:
         response["headers"] = {"Content-Type": "application/json"}
     return response
+
+
+def get_temp_dir():
+    # NOTE: only /tmp/ is writable within an AWS Lambda function
+    return "/tmp/"

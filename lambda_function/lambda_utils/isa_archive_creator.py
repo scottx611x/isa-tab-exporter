@@ -9,7 +9,11 @@ from isatools import isatab, json2isatab
 from isatools.isajson import validate
 
 from .constants import DEFAULT_ISA_ARCHIVE_NAME
-from .utils import IsaArchiveCreatorBadRequest, IsaJSONValidationError
+from .utils import (
+    IsaArchiveCreatorBadRequest,
+    IsaJSONValidationError,
+    get_temp_dir,
+)
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -34,8 +38,13 @@ class IsaArchiveCreator:
     (..., 'BII-S-3')
     """
 
-    def __init__(self, isa_json, isatab_filename=DEFAULT_ISA_ARCHIVE_NAME):
-        self.temp_dir = self._get_temp_dir()
+    def __init__(
+        self, isa_json, temp_dir=None, isatab_filename=DEFAULT_ISA_ARCHIVE_NAME
+    ):
+        if temp_dir is None:
+            self.temp_dir = self._get_temp_dir()
+        else:
+            self.temp_dir = temp_dir
         self.conversion_dir = os.path.join(
             self.temp_dir, "json2isatab_output/"
         )
@@ -105,11 +114,11 @@ class IsaArchiveCreator:
             investigation_file_object.name
         )
         logger.info(
-            f"Loading ISA-Tab object from investigation file: "
+            f"Loading Investigation object from investigation file: "
             f"`{investigation_file_object.name}`"
         )
-        isa_tab = isatab.load(investigation_file_object)
-        logger.info(f"Created ISA-Tab object: {isa_tab}")
+        investigation = isatab.load(investigation_file_object)
+        logger.info(f"Created Investigation object: {investigation}")
 
         def _write_to_isa_archive(file_path):
             logger.info(
@@ -126,7 +135,7 @@ class IsaArchiveCreator:
                 os.path.basename(investigation_file_object.name)
             )
 
-            for study in isa_tab.studies:
+            for study in investigation.studies:
                 _write_to_isa_archive(study.filename)
 
                 for assay in study.assays:
@@ -136,18 +145,21 @@ class IsaArchiveCreator:
 
     @staticmethod
     def _get_temp_dir():
-        # NOTE: only /tmp/ is writable within an AWS Lambda function
-        return "/tmp/"
+        return get_temp_dir()
 
     def run(self):
         return self.create_base64_encoded_isatab_archive(), self.isatab_name
 
     def _validate_isa_json(self, isa_json_file):
         validation_dict = validate(isa_json_file)
+
+        logger.info(f"Validation run info: {validation_dict}")
+
         errors = validation_dict.get("errors")
         if errors:
             raise IsaJSONValidationError(errors)
 
     def _write_out_isa_json_contents(self):
         with open(self.isa_json_path, "w") as isa_json:
+            logger.info(f"ISA-Tab contents: {self.isatab_contents}")
             json.dump(self.isatab_contents, isa_json)

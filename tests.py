@@ -17,7 +17,7 @@ sys.path.insert(0, "lambda_function")
 from lambda_function import api_gateway_post_handler as post_handler
 from lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
 from lambda_utils.isa_archive_creator import IsaArchiveCreator
-from lambda_utils.utils import IsaArchiveCreatorBadRequest
+from lambda_utils.utils import IsaArchiveCreatorBadRequest, get_temp_dir
 
 from nose.plugins.attrib import attr
 from parameterized import parameterized
@@ -64,8 +64,9 @@ class ConstantsTests(unittest.TestCase):
 class TemporaryDirectoryTestCase(unittest.TestCase):
     def setUp(self):
         self.temp_test_dir = tempfile.mkdtemp() + "/"
-        temp_dir_mock = mock.patch.object(
-            IsaArchiveCreator, "_get_temp_dir", return_value=self.temp_test_dir
+        temp_dir_mock = mock.patch(
+            "lambda_utils.isa_archive_creator.get_temp_dir",
+            return_value=self.temp_test_dir,
         )
         temp_dir_mock.start()
 
@@ -76,7 +77,7 @@ class TemporaryDirectoryTestCase(unittest.TestCase):
 
 class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
     def setUp(self):
-        super().setUp()
+        super(IsaArchiveCreatorTests, self).setUp()
 
         def isa_creator(isa_json_filename="BII-S-3.json"):
             with open(
@@ -152,9 +153,6 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
 
 
 class IsaArchiveCreatorTestsNoMocks(unittest.TestCase):
-    def test__get_temp_dir(self):
-        self.assertEqual(IsaArchiveCreator._get_temp_dir(), "/tmp/")
-
     def test___python_reqs___is_on_pythonpath(self):
         self.assertIn("__python_reqs__", sys.path[0])
 
@@ -312,3 +310,9 @@ class DocTests(TemporaryDirectoryTestCase):
             report=True,
             raise_on_error=True,
         )
+
+
+class UtilsTests(unittest.TestCase):
+    def test_get_temp_dir(self):
+        self.assertEqual(get_temp_dir(), "/tmp/")
+
