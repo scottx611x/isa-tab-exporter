@@ -1,4 +1,5 @@
 # coding=utf-8
+import json
 from http import HTTPStatus
 import logging
 import os
@@ -11,6 +12,7 @@ from lambda_utils.isa_archive_creator import IsaArchiveCreator
 from lambda_utils.utils import (
     IsaArchiveCreatorBadRequest,
     create_api_gateway_response,
+    IsaJSONValidationError,
 )
 
 logger = logging.getLogger()
@@ -24,14 +26,21 @@ def api_gateway_post_handler(event, context):
         return create_api_gateway_response(
             *IsaArchiveCreator(event.get("body")).run()
         )
+    except IsaJSONValidationError as e:
+        logger.error(str(e))
+        return create_api_gateway_response(
+            json.dumps(e.args[0], sort_keys=True, separators=(",", ": ")),
+            status_code=HTTPStatus.BAD_REQUEST,
+        )
     except IsaArchiveCreatorBadRequest as e:
         logger.error(str(e))
         return create_api_gateway_response(
-            f"Bad Request: {e}", status_code=HTTPStatus.BAD_REQUEST
+            json.dumps({"Bad Request": str(e)}),
+            status_code=HTTPStatus.BAD_REQUEST,
         )
     except Exception as e:
         logger.error(str(e))
         return create_api_gateway_response(
-            f"Unexpected Error: {e}",
+            json.dumps({"Unexpected Error": str(e)}),
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
         )
