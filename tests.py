@@ -27,7 +27,6 @@ SLOW_TEST_TAG = "slow"
 TEST_ISA_ARCHIVE_NAME = "Test ISA Archive"
 TEST_ISA_JSON_DIR = "test_data/isa_json/"
 TEST_ISA_JSON_FILENAMES = os.listdir(TEST_ISA_JSON_DIR)
-
 TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES = [
     (
         "BII-I-1.json",
@@ -84,10 +83,10 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
                 f"{TEST_ISA_JSON_DIR}{isa_json_filename}"
             ) as sample_json:
                 post_body = json.dumps(
-                    {
-                        "isatab_filename": TEST_ISA_ARCHIVE_NAME,
-                        "isatab_contents": json.loads(sample_json.read()),
-                    }
+                    dict(
+                        isatab_filename=TEST_ISA_ARCHIVE_NAME,
+                        isatab_contents=json.loads(sample_json.read()),
+                    )
                 )
             return IsaArchiveCreator(post_body)
 
@@ -143,10 +142,10 @@ class IsaArchiveCreatorTests(TemporaryDirectoryTestCase):
     def test_zip_is_stripped_from_isatab_name_if_provided(self):
         isa_creator = IsaArchiveCreator(
             json.dumps(
-                {
-                    "isatab_filename": "Cool ISA-Tab.zip",
-                    "isatab_contents": {"test": "content"},
-                }
+                dict(
+                    isatab_filename="Cool ISA-Tab.zip",
+                    isatab_contents={"test": "content"},
+                )
             )
         )
         self.assertEqual(isa_creator.isatab_name, "Cool ISA-Tab")
@@ -169,14 +168,14 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
                 f"{TEST_ISA_JSON_DIR}{isa_json_filename}"
             ) as sample_json:
                 isatab_contents = json.loads(sample_json.read())
-            return {
-                "body": json.dumps(
+            return dict(
+                body=json.dumps(
                     {
                         "isatab_filename": f"{TEST_ISA_ARCHIVE_NAME}",
                         "isatab_contents": isatab_contents,
                     }
                 )
-            }
+            )
 
         self.test_event = create_test_event
 
@@ -191,17 +190,16 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             self.test_event("BII-S-3.json"), self.test_context
         )
         self.assertDictContainsSubset(
-            {
-                "headers": {
-                    "Content-Encoding": "zip",
+            dict(
+                headers={
                     "Content-Type": "application/zip",
                     "Content-Disposition": (
                         f'attachment; filename="{TEST_ISA_ARCHIVE_NAME}.zip"'
                     ),
                 },
-                "isBase64Encoded": True,
-                "statusCode": 200,
-            },
+                isBase64Encoded=True,
+                statusCode=200,
+            ),
             lambda_response,
         )
 
@@ -214,16 +212,15 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             self.test_context,
         )
         self.assertDictContainsSubset(
-            {
-                "headers": {
-                    "Content-Encoding": "zip",
+            dict(
+                headers={
                     "Content-Type": "application/zip",
                     "Content-Disposition": "attachment; "
                     'filename="ISA-Tab.zip"',
                 },
-                "isBase64Encoded": True,
-                "statusCode": 200,
-            },
+                isBase64Encoded=True,
+                statusCode=200,
+            ),
             lambda_response,
         )
 
@@ -232,12 +229,12 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             {"body": {"this_is_not": "json"}}, self.test_context
         )
         self.assertEqual(
-            {
-                "body": "Bad Request: POST body is not valid JSON: the JSON "
-                "object must "
-                "be str, bytes or bytearray, not 'dict'",
-                "statusCode": 400,
-            },
+            dict(
+                headers={"Content-Type": "application/json"},
+                body='{"Bad Request": "POST body is not valid JSON: the JSON '
+                "object must be str, bytes or bytearray, not 'dict'\"}",
+                statusCode=400,
+            ),
             lambda_response,
         )
 
@@ -246,13 +243,12 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             {"body": json.dumps({})}, self.test_context
         )
         self.assertEqual(
-            {
-                "body": (
-                    "Bad Request: `isatab_contents` are required in the POST "
-                    "request body."
-                ),
-                "statusCode": 400,
-            },
+            dict(
+                headers={"Content-Type": "application/json"},
+                body='{"Bad Request": "`isatab_contents` are required in the '
+                'POST request body."}',
+                statusCode=400,
+            ),
             lambda_response,
         )
 
@@ -265,7 +261,11 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
                 self.test_event("BII-I-1.json"), self.test_context
             )
             self.assertEqual(
-                {"body": "Unexpected Error: Oh No!", "statusCode": 500},
+                dict(
+                    headers={"Content-Type": "application/json"},
+                    body='{"Unexpected Error": "Oh No!"}',
+                    statusCode=500,
+                ),
                 lambda_response,
             )
 
@@ -291,20 +291,12 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             {"body": json.dumps({"isatab_contents": {}})}, self.test_context
         )
         self.assertEqual(
-            {
-                "body": "Bad Request: {}".format(
-                    [
-                        {
-                            "message": "JSON Error",
-                            "supplemental": (
-                                "Error when reading JSON; key: 'studies'"
-                            ),
-                            "code": 2,
-                        }
-                    ]
-                ),
-                "statusCode": 400,
-            },
+            dict(
+                headers={"Content-Type": "application/json"},
+                body='[{"code": 2,"message": "JSON Error","supplemental": '
+                "\"Error when reading JSON; key: 'studies'\"}]",
+                statusCode=400,
+            ),
             lambda_response,
         )
 
