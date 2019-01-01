@@ -28,6 +28,7 @@ def create_api_gateway_response(
     if status_code is HTTPStatus.OK:
         response["headers"] = {
             "Content-Type": "application/zip",
+            "Content-Encoding": "zip",
             "Content-Disposition": (
                 f'attachment; filename="{isatab_filename}.zip"'
             ),

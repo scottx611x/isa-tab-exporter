@@ -191,6 +191,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             dict(
                 headers={
                     "Content-Type": "application/zip",
+                    "Content-Encoding": "zip",
                     "Content-Disposition": (
                         f'attachment; filename="{TEST_ISA_ARCHIVE_NAME}.zip"'
                     ),
@@ -213,6 +214,7 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             dict(
                 headers={
                     "Content-Type": "application/zip",
+                    "Content-Encoding": "zip",
                     "Content-Disposition": "attachment; "
                     'filename="ISA-Tab.zip"',
                 },
