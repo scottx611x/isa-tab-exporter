@@ -36,7 +36,7 @@ $ ./deploy.sh
 
 ...
 
-Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
+Apply complete! Resources: 20 added, 0 changed, 0 destroyed.
 
 Outputs:
 
