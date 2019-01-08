@@ -293,8 +293,11 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
         self.assertEqual(
             dict(
                 headers={"Content-Type": "application/json"},
-                body='[{"code": 2,"message": "JSON Error","supplemental": '
-                "\"Error when reading JSON; key: 'studies'\"}]",
+                body='{"errors": [{"code": 2,"message": "JSON Error",'
+                '"supplemental": '
+                "\"Error when reading JSON; key: 'studies'\"}],"
+                '"validation_finished": '
+                'true,"warnings": []}',
                 statusCode=400,
             ),
             lambda_response,

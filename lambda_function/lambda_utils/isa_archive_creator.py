@@ -155,9 +155,8 @@ class IsaArchiveCreator:
 
         logger.info(f"Validation run info: {validation_dict}")
 
-        errors = validation_dict.get("errors")
-        if errors:
-            raise IsaJSONValidationError(errors)
+        if validation_dict.get("errors"):
+            raise IsaJSONValidationError(validation_dict)
 
     def _write_out_isa_json_contents(self):
         with open(self.isa_json_path, "w") as isa_json:
