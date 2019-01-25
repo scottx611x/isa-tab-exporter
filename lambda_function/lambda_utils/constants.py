@@ -1,1 +1,2 @@
 DEFAULT_ISA_ARCHIVE_NAME = "ISA-Tab"
+TEMP_DIR = "/tmp/"

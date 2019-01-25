@@ -1,7 +1,7 @@
 # coding=utf-8
 from http import HTTPStatus
 
-from .constants import DEFAULT_ISA_ARCHIVE_NAME
+from .constants import DEFAULT_ISA_ARCHIVE_NAME, TEMP_DIR
 
 
 class IsaArchiveCreatorBadRequest(Exception):
@@ -41,4 +41,4 @@ def create_api_gateway_response(
 
 def get_temp_dir():
     # NOTE: only /tmp/ is writable within an AWS Lambda function
-    return "/tmp/"
+    return TEMP_DIR

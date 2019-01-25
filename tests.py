@@ -15,7 +15,7 @@ import zipfile
 sys.path.insert(0, "lambda_function")
 
 from lambda_function import api_gateway_post_handler as post_handler
-from lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME
+from lambda_utils.constants import DEFAULT_ISA_ARCHIVE_NAME, TEMP_DIR
 from lambda_utils.isa_archive_creator import IsaArchiveCreator
 from lambda_utils.utils import IsaArchiveCreatorBadRequest, get_temp_dir
 
@@ -319,4 +319,4 @@ class DocTests(TemporaryDirectoryTestCase):
 
 class UtilsTests(unittest.TestCase):
     def test_get_temp_dir(self):
-        self.assertEqual(get_temp_dir(), "/tmp/")
+        self.assertEqual(get_temp_dir(), TEMP_DIR)
