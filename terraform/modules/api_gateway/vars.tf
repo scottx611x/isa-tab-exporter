@@ -1,8 +1,6 @@
 variable acm_certificate_arn {}
 
-variable api_gateway_stage_name {
-  default = "development"
-}
+variable api_gateway_stage_name {}
 
 variable domain_name {}
 

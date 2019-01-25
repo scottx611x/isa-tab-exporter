@@ -16,6 +16,10 @@ variable "acm_certificate_arn" {
   default = false
 }
 
+variable "api_gateway_stage_name" {
+  default = "development"
+}
+
 variable "domain_name" {
   default = "example.com"
 }
