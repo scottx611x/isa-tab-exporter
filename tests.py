@@ -260,14 +260,14 @@ class IsaTabExporterTests(TemporaryDirectoryTestCase):
             lambda_response = post_handler(
                 self.test_event("BII-I-1.json"), self.test_context
             )
-            self.assertEqual(
+            self.assertDictContainsSubset(
                 dict(
                     headers={"Content-Type": "application/json"},
-                    body='{"Unexpected Error": "Oh No!"}',
                     statusCode=500,
                 ),
                 lambda_response,
             )
+            self.assertIn("Unexpected Error", lambda_response["body"])
 
     @parameterized.expand(TEST_ISA_JSON_FILENAMES_WITH_EXPECTED_ZIP_FILENAMES)
     @attr(SLOW_TEST_TAG)

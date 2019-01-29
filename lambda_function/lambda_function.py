@@ -4,6 +4,7 @@ from http import HTTPStatus
 import logging
 import os
 import sys
+import traceback
 from tempfile import TemporaryDirectory
 
 # Add Lambda's third-party reqs to PYTHONPATH
@@ -44,9 +45,10 @@ def api_gateway_post_handler(event, context):
             json.dumps({"Bad Request": str(e)}),
             status_code=HTTPStatus.BAD_REQUEST,
         )
-    except Exception as e:
-        logger.error(str(e))
+    except Exception:
+        traceback_info = traceback.format_exc()
+        logger.error(traceback_info)
         return create_api_gateway_response(
-            json.dumps({"Unexpected Error": str(e)}),
+            json.dumps({"Unexpected Error": traceback_info}),
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
         )
