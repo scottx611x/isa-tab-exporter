@@ -8,6 +8,8 @@ The aim of `isa-tab-exporter` is to provide the [refinery-platform](https://gith
 
 Specifically, an API Gateway deployment is created that accepts these POST requests, and proxies said requests to a Lambda function that it triggers which will execute the [ISA-tools API](https://github.com/ISA-tools/isa-api) code to transform the ISA-JSON to a valid ISA-Tab Archive .zip file.
 
+![isa_tab_exporter](https://user-images.githubusercontent.com/5629547/52230921-9ad6ae00-2886-11e9-8f33-eb661952dfae.png)
+
 ### Pre-Reqs:
 - [terraform](https://www.terraform.io/)
 - [docker](https://docs.docker.com/)
