@@ -106,7 +106,8 @@ class IsaArchiveCreator:
             # Reset isa_json file pointer after read in _validate_isa_json()
             isa_json.seek(0)
             json2isatab.convert(
-                isa_json, self.conversion_dir, validate_first=False
+                isa_json, self.conversion_dir, 
+                use_new_parser=False, validate_first=False
             )
 
     def _create_isa_archive(self, investigation_file_object):
