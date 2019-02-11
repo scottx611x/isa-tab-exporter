@@ -1,4 +1,4 @@
-# isa-tab-exporter [![Build Status](https://travis-ci.com/scottx611x/isa-tab-exporter.svg?branch=master)](https://travis-ci.com/scottx611x/isa-tab-exporter) [![codecov](https://codecov.io/gh/scottx611x/isa-tab-exporter/branch/master/graph/badge.svg)](https://codecov.io/gh/scottx611x/isa-tab-exporter)
+# isa-tab-exporter [![Build Status](https://travis-ci.com/refinery-platform/isa-tab-exporter.svg?branch=master)](https://travis-ci.com/refinery-platform/isa-tab-exporter) [![codecov](https://codecov.io/gh/scottx611x/isa-tab-exporter/branch/master/graph/badge.svg)](https://codecov.io/gh/scottx611x/isa-tab-exporter)
 
 ### What?
 The aim of `isa-tab-exporter` is to provide the [refinery-platform](https://github.com/refinery-platform/refinery-platform) with a means to utilize the Python3-based [ISA-tools API](https://github.com/ISA-tools/isa-api) while it remains in the land of Python2, but development has been done in a general manner so that anyone facing this same issue could reuse this code.
