@@ -2,11 +2,13 @@ terraform {
   backend "s3" {
     bucket = "isatab-exporter-config"
     key    = "terraform.tfstate"
-    region = "us-east-1"
+    region = "${var.aws_region}"
   }
 }
 
-provider "aws" {}
+provider "aws" {
+  region = "${var.aws_region}"
+}
 
 provider "random" {
   version = "~> 2.0"
