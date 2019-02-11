@@ -2,7 +2,6 @@ terraform {
   backend "s3" {
     bucket = "isatab-exporter-config"
     key    = "terraform.tfstate"
-    region = "us-east-1"
   }
 }
 
