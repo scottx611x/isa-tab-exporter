@@ -42,7 +42,7 @@ script:
   - nosetests
 
   - pushd terraform
-  - terraform init
+  - terraform init -backend-config="bucket=isatab-exporter-config" -backend-config="region=us-east-1" -input=false
   - terraform validate
   - terraform fmt -check=true -diff=true
   - terraform plan -detailed-exitcode

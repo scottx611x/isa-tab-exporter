@@ -4,7 +4,6 @@
 
 # initialize Terraform and apply infrastructure changes
 cd terraform
-terraform init -backend-config="bucket=isatab-exporter-config" -backend-config="region=us-east-1" -input=false
 terraform apply -auto-approve \
     -var 'acm_certificate_arn=$ACM_CERTIFICATE_ARN' \
     -var 'domain_name=isa-tab-exporter.aws.stemcellcommons.org' \
