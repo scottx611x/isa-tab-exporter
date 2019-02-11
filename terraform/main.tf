@@ -1,7 +1,8 @@
 terraform {
   backend "s3" {
     bucket = "isatab-exporter-config"
-    key    = "terraform.tfstate"
+    key                  = "terraform.tfstate"
+    workspace_key_prefix = "sites"
   }
 }
 
