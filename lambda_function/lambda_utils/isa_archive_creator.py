@@ -148,6 +148,7 @@ class IsaArchiveCreator:
         return get_temp_dir()
 
     def run(self):
+        logger.info("Running IsaArchiveCreator...")
         return self.create_base64_encoded_isatab_archive(), self.isatab_name
 
     def _validate_isa_json(self, isa_json_file):
