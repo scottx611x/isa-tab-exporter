@@ -41,7 +41,6 @@ script:
   - terraform init -input=false
   - terraform validate
   - terraform fmt -check=true -diff=true
-  - terraform plan -detailed-exitcode
   - popd
 
 after_success:
