@@ -1,6 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket = "isatab-exporter-config"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 provider "aws" {
-  region  = "us-east-1"
-  profile = "${var.aws_profile_name}"
+  region = "us-east-1"
 }
 
 provider "random" {
