@@ -4,6 +4,7 @@
 
 # initialize Terraform and apply infrastructure changes
 cd terraform
+terraform init -input=false
 terraform workspace select production
 terraform apply -auto-approve \
     -var 'acm_certificate_arn=$ACM_CERTIFICATE_ARN' \
