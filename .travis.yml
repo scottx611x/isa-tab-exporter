@@ -23,10 +23,11 @@ install:
   - pip install -r requirements-test.txt
 
 script:
-  - black --check --diff .
   - flake8
+  - black --check --diff .
 
-  - nosetests
+  - nosetests -a '!slow'
+  - nosetests -a 'slow'
 
   - pushd terraform
   - terraform fmt -check=true -diff=true
