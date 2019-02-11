@@ -5,5 +5,9 @@
 # initialize Terraform and apply infrastructure changes
 cd terraform
 terraform init
-terraform apply -auto-approve
+terraform apply -auto-approve \
+    -var 'acm_certificate_arn=$ACM_CERTIFICATE_ARN' \
+    -var 'domain_name=isa-tab-exporter.aws.stemcellcommons.org' \
+    -var 'hosted_zone_id=$ROUTE_53_HOSTED_ZONE_ID' \
+    -var 'api_gateway_stage_name=production'
 cd ..
