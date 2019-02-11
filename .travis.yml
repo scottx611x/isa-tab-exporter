@@ -4,6 +4,10 @@ sudo: required
 python:
   - 3.6
 
+stages:
+  - name: deploy
+    if: branch = master
+
 env:
   global:
   - TERRAFORM_VERSION=0.11.10
@@ -46,6 +50,6 @@ script:
 after_success:
   - codecov
 
-#deploy:
-#  provider: script
-#  script: bash deploy.sh
+deploy:
+  provider: script
+  script: bash deploy.sh
