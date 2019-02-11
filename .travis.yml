@@ -31,16 +31,17 @@ install:
   - pip install -r requirements-test.txt
 
 script:
+  - black --check --diff .
+  - flake8
+
+  - nosetests
+
   - pushd terraform
   - terraform init
   - terraform validate
   - terraform fmt -check=true -diff=true
+  - terraform plan -detailed-exitcode
   - popd
-
-  - nosetests
-
-  - black --check --diff .
-  - flake8
 
 after_success:
   - codecov
