@@ -3,10 +3,6 @@ Example terraform.tfvars file
 Usage: $ cp terraform.tfvars.example terraform.tfvars
 */
 
-// AWS Profile name within ~/.aws/credentials to use
-// aws_profile_name = ""
-
-
 // Uncomment and populate entries below this line to associate API deployment with a custom domain name
 // acm_certificate_arn = "<AWS ACM Certificate ARN>"
 // domain_name = "<Custom Domain Name>"
