@@ -6,9 +6,7 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
+provider "aws" {}
 
 provider "random" {
   version = "~> 2.0"
