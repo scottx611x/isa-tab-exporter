@@ -29,9 +29,8 @@ script:
   - nosetests
 
   - pushd terraform
-  - terraform init -input=false
-  - terraform validate
   - terraform fmt -check=true -diff=true
+  - terraform validate -backend=false
   - popd
 
 after_success:
