@@ -1,8 +1,13 @@
 language: python
-cache: pip
+
 sudo: required
-python:
-  - 3.6
+
+python: 3.6
+
+cache:
+  directories:
+    - /opt/terraform
+  pip: true
 
 env:
   global:
@@ -11,8 +16,8 @@ env:
 jobs:
   include:
     - stage: "Lint/Format/Validate/Test"
-      after_success: skip
       env: NEEDS_PYTHON_REQS="yes" NEEDS_TERRAFORM="yes"
+      after_success: skip
       name: "Lint/Format/Validate"
       script: ./scripts/travis_lint_format_validate.sh
     - script: nosetests
@@ -26,8 +31,10 @@ jobs:
 install:
   - |
     if [ "${NEEDS_TERRAFORM}" = "yes" ]; then
-      curl -fSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o terraform.zip;
-      sudo unzip terraform.zip -d /opt/terraform;
+      if [ ! -f /opt/terraform/terraform ]; then
+        curl -fSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o terraform.zip;
+        sudo unzip terraform.zip -d /opt/terraform;
+      fi
       sudo ln -s /opt/terraform/terraform /usr/bin/terraform;
       rm -f terraform.zip;
     fi
