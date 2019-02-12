@@ -36,6 +36,6 @@ after_success:
 
 deploy:
   provider: script
-  script: bash deploy.sh
+  script: bash deployment/scripts/deploy.sh
   on:
     all_branches: true
