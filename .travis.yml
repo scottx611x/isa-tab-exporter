@@ -30,7 +30,10 @@ install:
       rm -f terraform.zip;
     fi
 
-  - if [ "${NEEDS_PYTHON_REQS}" = "yes" ]; then pip install -r requirements-test.txt; fi
+  - |
+    if [ "${NEEDS_PYTHON_REQS}" = "yes" ]; then
+      pip install -r requirements-test.txt;
+    fi
 
 after_success:
   - codecov
