@@ -14,11 +14,12 @@ curl -X POST -O -J ${API_GATEWAY_DEPLOYMENT_URL} \
 }
 CURL_DATA
 
+sleep 5
+
 if [ ! -f ./BII-S-7.zip ]; then
     echo "BII-S-7.zip not found!"
     exit 1
 else
     echo "Deploy successful"
-    rm ./BII-S-7.zip
     exit 0
 fi
