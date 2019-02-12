@@ -6,7 +6,6 @@ python:
 
 stages:
   - name: deploy
-    if: branch = master
 
 env:
   global:
