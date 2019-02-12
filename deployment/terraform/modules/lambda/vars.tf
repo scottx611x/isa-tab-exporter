@@ -11,4 +11,5 @@ variable lambda_memory_size {
 
 variable lambda_zip_hash {}
 variable lambda_zip_s3_object_key {}
+variable resource_name_prefix {}
 variable s3_bucket {}

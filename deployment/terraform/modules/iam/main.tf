@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_execution_role" {
-  name = "isa_tab_exporter_lambda_execution_role"
+  name = "${var.resource_name_prefix}isa_tab_exporter_lambda_execution_role"
 
   assume_role_policy = <<EOF
 {
@@ -19,7 +19,7 @@ EOF
 }
 
 resource "aws_iam_policy" "cloudwatch_logging" {
-  name        = "cloudwatch_logging"
+  name        = "${var.resource_name_prefix}cloudwatch_logging"
   path        = "/"
   description = "IAM policy for logging from a lambda"
 

@@ -28,7 +28,7 @@ script:
   - nosetests -a '!slow'
   - nosetests -a 'slow'
 
-  - pushd terraform
+  - pushd deployment/terraform
   - terraform fmt -check=true -diff=true
   - terraform init -input=false -backend=false
   - terraform validate

@@ -22,7 +22,8 @@ resource "random_string" "s3_bucket_name_random_string" {
 }
 
 locals {
-  use_custom_domain = "${var.acm_certificate_arn != false && var.domain_name != "example.com"}"
+  use_custom_domain    = "${var.acm_certificate_arn != false && var.domain_name != "example.com"}"
+  resource_name_prefix = "${terraform.workspace}_"
 }
 
 module api_gateway {
@@ -31,6 +32,7 @@ module api_gateway {
   api_gateway_stage_name     = "${var.api_gateway_stage_name}"
   domain_name                = "${var.domain_name}"
   lambda_function_invoke_arn = "${module.lambda.lambda_function_invoke_arn}"
+  resource_name_prefix       = "${local.resource_name_prefix}"
   use_custom_domain          = "${local.use_custom_domain}"
 }
 
@@ -42,6 +44,7 @@ module cloud_watch {
 module iam {
   source                   = "./modules/iam"
   cloudwatch_log_group_arn = "${module.cloud_watch.cloudwatch_log_group_arn}"
+  resource_name_prefix     = "${local.resource_name_prefix}"
 }
 
 module lambda {
@@ -51,6 +54,7 @@ module lambda {
   iam_role_arn                       = "${module.iam.lambda_iam_role_arn}"
   lambda_zip_hash                    = "${module.s3.lambda_zip_hash}"
   lambda_zip_s3_object_key           = "${module.s3.lambda_zip_s3_object_key}"
+  resource_name_prefix               = "${local.resource_name_prefix}"
   s3_bucket                          = "${module.s3.s3_bucket}"
 }
 

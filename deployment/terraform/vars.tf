@@ -7,7 +7,7 @@ variable "lambda_zip_name" {
 }
 
 variable "local_lambda_dir" {
-  default = "../lambda_function"
+  default = "../../lambda_function"
 }
 
 // Variables below here are only necessary when using a custom domain name

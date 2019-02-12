@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "isatab_exporter_lambda" {
-  function_name    = "isatab-exporter"
+  function_name    = "${var.resource_name_prefix}isatab_exporter"
   role             = "${var.iam_role_arn}"
   handler          = "lambda_function.api_gateway_post_handler"
   source_code_hash = "${var.lambda_zip_hash}"
