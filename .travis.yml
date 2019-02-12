@@ -10,14 +10,14 @@ env:
 
 jobs:
   include:
-    - stage: "Lint/Format/Validate"
+    - stage: "Lint/Format/Validate/Test"
       env: NEEDS_PYTHON_REQS="yes";NEEDS_TERRAFORM="yes"
+      name: "Lint/Format/Validate"
       script: ./scripts/travis_lint_format_validate.sh
-    - stage: "Test"
-      env: NEEDS_PYTHON_REQS="yes";NEEDS_TERRAFORM="yes"
-      script: nosetests
-      script: codecov
-      name: "CodeCov"
+    - script: nosetests
+      name: "Unit Tests"
+    - script: codecov
+      name: "Code Coverage"
     - stage: "Deploy"
       env: NEEDS_TERRAFORM="yes"
       script: ./deployment/scripts/deploy.sh
