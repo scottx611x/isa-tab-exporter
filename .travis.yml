@@ -4,9 +4,6 @@ sudo: required
 python:
   - 3.6
 
-stages:
-  - name: deploy
-
 env:
   global:
   - TERRAFORM_VERSION=0.11.10
@@ -40,3 +37,5 @@ after_success:
 deploy:
   provider: script
   script: bash deploy.sh
+  on:
+    all_branches: true
