@@ -1,4 +1,4 @@
-resource "aws_route53_record" "isa-tab-exporter-route53-record" {
+resource "aws_route53_record" "isa_tab_exporter_route53_record" {
   name    = "${var.domain_name}"
   type    = "A"
   zone_id = "${var.hosted_zone_id}"
