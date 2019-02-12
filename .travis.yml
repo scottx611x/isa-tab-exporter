@@ -22,8 +22,7 @@ script:
   - flake8
   - black --check --diff .
 
-  - nosetests -a '!slow'
-  - nosetests -a 'slow'
+  - nosetests
 
   - pushd deployment/terraform
   - terraform fmt -check=true -diff=true
