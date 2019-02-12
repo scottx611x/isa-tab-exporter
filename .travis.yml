@@ -17,21 +17,21 @@ jobs:
       env: NEEDS_PYTHON_REQS="yes";NEEDS_TERRAFORM="yes"
       script: nosetests
       script: codecov
+      name: "CodeCov"
     - stage: "Deploy"
       env: NEEDS_TERRAFORM="yes"
       script: ./deployment/scripts/deploy.sh
 
 install:
-  - if [ "${NEEDS_TERRAFORM}" = "yes" ]; then
-      curl -fSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o terraform.zip
-      sudo unzip terraform.zip -d /opt/terraform
-      sudo ln -s /opt/terraform/terraform /usr/bin/terraform
-      rm -f terraform.zip
+  - |
+    if [ "${NEEDS_TERRAFORM}" = "yes" ]; then
+      curl -fSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o terraform.zip;
+      sudo unzip terraform.zip -d /opt/terraform;
+      sudo ln -s /opt/terraform/terraform /usr/bin/terraform;
+      rm -f terraform.zip;
     fi
 
-  - if [ "${NEEDS_PYTHON_REQS}" = "yes" ]; then
-      pip install -r requirements-test.txt
-    fi
+  - if [ "${NEEDS_PYTHON_REQS}" = "yes" ]; then pip install -r requirements-test.txt; fi
 
 deploy:
   provider: script
