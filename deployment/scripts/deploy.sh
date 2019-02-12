@@ -4,7 +4,7 @@
 
 # initialize Terraform and apply infrastructure changes
 cd deployment/terraform
-terraform init -input=false
+terraform init -backend-config="bucket=$TERRAFORM_STATE_BUCKET" -input=false
 
 if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
     terraform workspace select production
