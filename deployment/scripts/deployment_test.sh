@@ -16,7 +16,7 @@ CURL_DATA
 
 sleep 5
 
-if [ ! -f ./BII-S-7.zip ]; then
+if [ ! -f BII-S-7.zip ]; then
     echo "BII-S-7.zip not found!"
     exit 1
 else
