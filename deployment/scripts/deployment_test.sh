@@ -20,5 +20,5 @@ if [ ! -f ./BII-S-7.zip ]; then
 else
     echo "Deploy successful"
     rm ./BII-S-7.zip
-    exit 1
+    exit 0
 fi
