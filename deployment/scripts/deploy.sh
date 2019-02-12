@@ -25,10 +25,15 @@ API_GATEWAY_INVOKE_URL=$(terraform output -json | jq --raw-output '.api_gateway_
 if [ "$TRAVIS_BRANCH" != "master" ]; then
     # Run an end-to-end test with the current API Gateway deployment
     ../scripts/deployment_test.sh ${API_GATEWAY_INVOKE_URL}
+    DEPLOY_TEST_EXIT_CODE=$?
 
     # Cleanup after non-production deployments
     terraform destroy --auto-approve;
+
+    # Fail if we received a non-zero exit code from deployment_test.sh
+    [[ ${DEPLOY_TEST_EXIT_CODE} -ne 0 ]] && exit ${DEPLOY_TEST_EXIT_CODE}
 fi
 
 cd ..
 
+exit 0
