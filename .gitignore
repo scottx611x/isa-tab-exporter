@@ -5,8 +5,8 @@ __pycache__
 lambda_function/__python_reqs__/*
 !lambda_function/__python_reqs__/.gitkeep
 
-terraform/lambda_function.zip
-.terraform
-terraform.tfvars
-terraform.tfstate*
+deployment/terraform/lambda_function.zip
+deployment/terraform/.terraform
+deployment/terraform/terraform.tfvars
+deployment/terraform/terraform.tfstate*
 .coverage
