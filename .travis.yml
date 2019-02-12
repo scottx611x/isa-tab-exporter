@@ -16,7 +16,7 @@ jobs:
       script: ./scripts/travis_lint_format_validate.sh
     - script: nosetests
       name: "Unit Tests"
-    - stage: deploy
+    - stage: "Deploy"
       env: NEEDS_TERRAFORM="yes"
       after_success: skip
       script: ./deployment/scripts/deploy.sh
@@ -34,9 +34,3 @@ install:
 
 after_success:
   - codecov
-
-deploy:
-  provider: script
-  script: bash deployment/scripts/deploy.sh
-  on:
-    all_branches: true
