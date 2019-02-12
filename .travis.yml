@@ -11,6 +11,7 @@ env:
 jobs:
   include:
     - stage: "Lint/Format/Validate/Test"
+      after_success: skip
       env: NEEDS_PYTHON_REQS="yes" NEEDS_TERRAFORM="yes"
       name: "Lint/Format/Validate"
       script: ./scripts/travis_lint_format_validate.sh
