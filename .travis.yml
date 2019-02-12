@@ -10,30 +10,28 @@ env:
 
 jobs:
   include:
-    - stage: "Lint/Format/Validate/Test"
-      after_success: skip
+    - stage: "Lint/Format/Validate"
       env: NEEDS_PYTHON_REQS="yes";NEEDS_TERRAFORM="yes"
       script: ./scripts/travis_lint_format_validate.sh
+    - stage: "Test"
+      env: NEEDS_PYTHON_REQS="yes";NEEDS_TERRAFORM="yes"
       script: nosetests
+      script: codecov
     - stage: "Deploy"
-      after_success: skip
       env: NEEDS_TERRAFORM="yes"
       script: ./deployment/scripts/deploy.sh
 
 install:
-  - if [ "NEEDS_TERRAFORM" = "yes" ]; then
+  - if [ "${NEEDS_TERRAFORM}" = "yes" ]; then
       curl -fSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o terraform.zip
       sudo unzip terraform.zip -d /opt/terraform
       sudo ln -s /opt/terraform/terraform /usr/bin/terraform
       rm -f terraform.zip
     fi
 
-  - if [ "NEEDS_PYTHON_REQS" = "yes" ]; then
+  - if [ "${NEEDS_PYTHON_REQS}" = "yes" ]; then
       pip install -r requirements-test.txt
     fi
-
-after_success:
-  - codecov
 
 deploy:
   provider: script
