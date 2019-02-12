@@ -20,13 +20,13 @@ if [ "$TRAVIS_BRANCH" != "master" ]; then
     terraform apply -auto-approve
 fi
 
-
 API_GATEWAY_INVOKE_URL=$(terraform output -json | jq --raw-output '.api_gateway_deployment_invoke_url.value')
 
-../scripts/curl_test.sh ${API_GATEWAY_INVOKE_URL}
-
-
 if [ "$TRAVIS_BRANCH" != "master" ]; then
+    # Run an end-to-end test with the current API Gateway deployment
+    ../scripts/deployment_test.sh ${API_GATEWAY_INVOKE_URL}
+
+    # Cleanup after non-production deployments
     terraform destroy --auto-approve;
 fi
 
