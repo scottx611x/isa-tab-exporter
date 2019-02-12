@@ -16,10 +16,9 @@ jobs:
       script: ./scripts/travis_lint_format_validate.sh
     - script: nosetests
       name: "Unit Tests"
-    - script: codecov
-      name: "Code Coverage"
-    - stage: "Deploy"
+    - stage: deploy
       env: NEEDS_TERRAFORM="yes"
+      after_success: skip
       script: ./deployment/scripts/deploy.sh
 
 install:
@@ -32,6 +31,9 @@ install:
     fi
 
   - if [ "${NEEDS_PYTHON_REQS}" = "yes" ]; then pip install -r requirements-test.txt; fi
+
+after_success:
+  - codecov
 
 deploy:
   provider: script
