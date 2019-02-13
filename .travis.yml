@@ -22,7 +22,7 @@ jobs:
       script: ./scripts/travis_lint_format_validate.sh
     - script: nosetests
       env: NEEDS_PYTHON_REQS="yes"
-      name: "Unit Tests"
+      name: "Tests"
     - stage: "Deploy"
       env: NEEDS_TERRAFORM="yes"
       after_success: skip
