@@ -31,10 +31,10 @@ $ nosetests -a 'slow'
 ```
 
 ### Deployment:
-The `deploy.sh` script will build the Lambda's python reqs using an Amazon Linux docker container, and provision the AWS infrastructure using Terraform.
+The [`deploy.sh`](deployment/scripts/deploy.sh) script will build the Lambda's Python requirements using an Amazon Linux docker container, and provision the AWS infrastructure using Terraform.
 
 ```bash
-$ ./deploy.sh
+$ ./deployment/scripts/deploy.sh
 
 ...
 
@@ -45,10 +45,19 @@ Outputs:
 api_gateway_deployment_invoke_url = https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/development/isa-tab-export
 ```
 
-See the [terraform-instructions](https://github.com/refinery-platform/isa-tab-exporter/tree/master/terraform#isa-tab-exporterterraform) for deployment to custom domain names, among other things.
+See the [**deployment README**](deployment/README.md) for more deployment related information.
 
 ### CI/CD:
-The Terraform code will be run in Travis-CI upon successful `master` branch builds deploying the latest version of the APIGateway/Lambda to the `production` APIGateway stage.
+Currently [Travis](https://travis-ci.org/) is used as the CI provder
+
+- Python code is linted using `flake8` and formatted using `black`
+- Terraform code is formatted and validated using its own utilities
+- Python tests are run using `nosetests`
+- Code coverage metrics are collected and available [here](https://codecov.io/gh/refinery-platform/isa-tab-exporter)
+- The latest version of the API Gateway deployment and Lambda function is deployed
+
+![screen shot 2019-02-13 at 11 07 10 am](https://user-images.githubusercontent.com/5629547/52725625-934a8f80-2f7f-11e9-9172-8735c05c8669.png)
+
 
 ### Example Usage:
 
@@ -71,11 +80,6 @@ curl: Saved to filename 'My Cool ISA-Tab.zip'
 
 **Postman**
 ![dec-14-2018 13-16-10](https://user-images.githubusercontent.com/5629547/50019956-7c4ce880-ffa2-11e8-87c1-e7b94c4df381.gif)
-
-### Development Notes:
-- Currently we are using [`flake8`](https://github.com/PyCQA/flake8) & [`black`](https://github.com/ambv/black) in CI to lint and format our Python code, respectively. These tools can be run outside of CI using the following commands:
-  - `black --diff .`
-  - `flake8`
 
 ---
 

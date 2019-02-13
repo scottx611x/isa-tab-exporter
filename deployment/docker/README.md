@@ -1,4 +1,4 @@
-# isa-tab-exporter/docker_context
+# isa-tab-exporter/deployment/docker
 
 This Dockerfile is used to build [scottx611x/aws-linux-python-3.6](https://hub.docker.com/r/scottx611x/aws-linux-python-3.6/)
 

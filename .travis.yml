@@ -19,7 +19,7 @@ jobs:
       env: NEEDS_PYTHON_REQS="yes" NEEDS_TERRAFORM="yes"
       after_success: skip
       name: "Lint/Format/Validate"
-      script: ./scripts/travis_lint_format_validate.sh
+      script: ./deployment/scripts/lint_format_validate.sh
     - script: nosetests
       env: NEEDS_PYTHON_REQS="yes"
       name: "Tests"
