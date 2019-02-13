@@ -37,7 +37,7 @@ if [ "$TRAVIS_BRANCH" != "master" ]; then
         terraform destroy --auto-approve;
 
         # Fail build if we received a non-zero exit code from deployment_test.sh
-        [[ ${DEPLOYMENT_TEST_EXIT_CODE} -ne 0 ]] && exit ${DEPLOY_TEST_EXIT_CODE}
+        [[ ${DEPLOYMENT_TEST_EXIT_CODE} -ne 0 ]] && exit ${DEPLOYMENT_TEST_EXIT_CODE}
     fi
 fi
 
