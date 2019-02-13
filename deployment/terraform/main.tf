@@ -28,7 +28,7 @@ locals {
 module api_gateway {
   source                     = "./modules/api_gateway"
   acm_certificate_arn        = "${var.acm_certificate_arn}"
-  api_gateway_stage_name     = "${local.resource_name_prefix}${var.api_gateway_stage_name}"
+  api_gateway_stage_name     = "${var.api_gateway_stage_name}"
   domain_name                = "${var.domain_name}"
   lambda_function_invoke_arn = "${module.lambda.lambda_function_invoke_arn}"
   resource_name_prefix       = "${local.resource_name_prefix}"
