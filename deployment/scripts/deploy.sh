@@ -3,7 +3,7 @@
 # Build Python requirements for the lambda using an aws-linux based container
 ./deployment/docker/install-lambda-reqs.sh $PWD/lambda_function
 
-# Initialize terraform using the S3 backend so that TRavis builds have
+# Initialize terraform using the S3 backend so that Travis builds have
 # access to the same workspaces & state files
 cd deployment/terraform
 terraform init -backend-config="bucket=$TERRAFORM_STATE_BUCKET" -input=false
