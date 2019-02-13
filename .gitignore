@@ -10,4 +10,3 @@ deployment/terraform/.terraform
 deployment/terraform/terraform.tfvars
 deployment/terraform/terraform.tfstate*
 .coverage
-BII-S-7.zip
