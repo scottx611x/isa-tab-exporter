@@ -27,5 +27,6 @@ if [ ! -f ${ISA_TAB_NAME}.zip ]; then
     exit 1
 else
     echo "End-to-end test against: ${API_GATEWAY_DEPLOYMENT_URL} succeeded"
+    rm ${ISA_TAB_NAME}.zip
     exit 0
 fi
