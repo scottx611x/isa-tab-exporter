@@ -1,6 +1,7 @@
 #!/bin/bash
 
-./docker_context/install-lambda-reqs.sh $PWD/lambda_function
+# Build Python requirements for the lambda using an aws-linux based container
+./deployment/docker/install-lambda-reqs.sh $PWD/lambda_function
 
 # initialize Terraform and apply infrastructure changes
 cd deployment/terraform
